@@ -1,10 +1,12 @@
 package com.gestion.ajedrez.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +31,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
@@ -47,6 +52,7 @@ public class UserController {
 	public ResponseEntity<User> updateUser(@RequestBody User user) {
 		userRepository.findById(user.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id: " + user.getId()));
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 
@@ -54,12 +60,15 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<User> createUser(@RequestBody User user) {
-		
-		User userFound = userRepository.findById(user.getId()).get();
-		if(userFound != null) {
-			throw new ResourceAlreadyExistsException("User already exist with id " + user.getId());
+		if(user.getId()!=null) {
+			User userFound = userRepository.findById(user.getId()).get();
+			if(userFound != null) {
+				throw new ResourceAlreadyExistsException("User already exist with id " + user.getId());
+			}
 		}
 		
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setCreated(new Date());
 		userRepository.save(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 
