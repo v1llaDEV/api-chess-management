@@ -10,26 +10,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="resultado")
-public class Result implements Serializable{
+@Table(name = "resultado")
+public class Result implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6862073111785666797L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name="nombre")
+	@Column(name="Id")
+	private String id;
+
+	@Column(name = "nombre")
 	private String name;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -40,7 +41,5 @@ public class Result implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 
 }

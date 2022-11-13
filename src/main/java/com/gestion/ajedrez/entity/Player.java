@@ -1,16 +1,15 @@
 package com.gestion.ajedrez.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "jugador")
@@ -23,14 +22,18 @@ public class Player implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Id")
 	private Long id;
 
 	@Column(name = "nombre")
 	private String name;
 
 	@Column(name = "Fecha_Nacimiento")
-	@Temporal(TemporalType.DATE)
-	private Date dateBirthday;
+	private String dateBirthday;
+	
+	@ManyToOne
+	@JoinColumn(name = "Id_pais")
+	private Country country;
 
 	public Long getId() {
 		return id;
@@ -48,23 +51,21 @@ public class Player implements Serializable {
 		this.name = name;
 	}
 
-	public Date getDateBirthday() {
+	public String getDateBirthday() {
 		return dateBirthday;
 	}
 
-	public void setDateBirthday(Date dateBirthday) {
+	public void setDateBirthday(String dateBirthday) {
 		this.dateBirthday = dateBirthday;
 	}
 
-	public Long getCountryId() {
-		return countryId;
+	public Country getCountry() {
+		return country;
 	}
 
-	public void setCountryId(Long countryId) {
-		this.countryId = countryId;
+	public void setCountry(Country country) {
+		this.country = country;
 	}
-
-	@Column(name = "Id_Pais")
-	private Long countryId;
-
+	
+	
 }

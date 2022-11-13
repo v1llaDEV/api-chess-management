@@ -20,6 +20,7 @@ public class Country implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="Id")
 	private Long id;
 
 	@Column(name = "Nombre")
