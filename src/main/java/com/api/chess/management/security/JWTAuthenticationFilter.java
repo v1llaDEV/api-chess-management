@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.api.chess.management.constants.ConfigurationConstants;
+import com.api.chess.management.constants.SecurityConstants;
 import com.api.chess.management.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,6 +28,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private AuthenticationManager authenticationManager;
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+		setFilterProcessesUrl(ConfigurationConstants.AUTHENTICATION_URL);
 		this.authenticationManager = authenticationManager;
 	}
 

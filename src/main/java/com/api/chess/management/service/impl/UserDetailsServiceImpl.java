@@ -1,13 +1,17 @@
-package com.api.chess.management.service;
+package com.api.chess.management.service.impl;
 
-import static java.util.Collections.emptyList;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.api.chess.management.entity.Rol;
 import com.api.chess.management.entity.User;
 import com.api.chess.management.repository.UserRepository;
 
@@ -24,7 +28,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), emptyList());
+		
+		List<GrantedAuthority> authorities = new ArrayList<>();
+        
+		
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
 	}
 
 }
