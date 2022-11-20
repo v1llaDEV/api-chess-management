@@ -2,6 +2,8 @@ package com.api.chess.management.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -45,9 +49,21 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 						.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, ""))
 						.getBody()
 						.getSubject();
+			
+			ArrayList<HashMap<String, String>> roles  =  (ArrayList<HashMap<String, String>>) Jwts.parser()
+					.setSigningKey(SecurityConstants.SUPER_SECRET_KEY)
+					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, ""))
+					.getBody()
+					.get("roles");
+			
+			List<GrantedAuthority> rolList = new ArrayList<GrantedAuthority>();
+			
+			for(HashMap<String, String> rol : roles) {
+				rolList.add(new SimpleGrantedAuthority((String) rol.get("authority")));
+			}
 
 			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+				return new UsernamePasswordAuthenticationToken(user, null, rolList);
 			}
 			return null;
 		}

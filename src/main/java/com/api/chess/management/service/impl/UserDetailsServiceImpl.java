@@ -16,23 +16,26 @@ import com.api.chess.management.entity.User;
 import com.api.chess.management.repository.UserRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		User user = userRepository.findByUsername(username).get();
+
+		User user = userRepository.findByUsername(username).orElse(null);
 		if (user == null) {
-			throw new UsernameNotFoundException(username);
+			throw new RuntimeException("No se ha encontrado el usuario con username: " + username);
 		}
-		
+
 		List<GrantedAuthority> authorities = new ArrayList<>();
-        
-		
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+		for (Rol rol : user.getRoles()) {
+			authorities.add(new SimpleGrantedAuthority(rol.getName()));
+		}
+
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+				authorities);
 	}
 
 }

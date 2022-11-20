@@ -49,8 +49,8 @@ public class UserController {
 	}
 
 	@PutMapping
-	public ResponseEntity<User> updateUser(@RequestBody User user) {
-		userRepository.findById(user.getId())
+	public ResponseEntity<User> updateUser(@RequestBody User user, Long id) {
+		userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id: " + user.getId()));
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userRepository.save(user);

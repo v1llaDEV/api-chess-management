@@ -1,7 +1,6 @@
 package com.api.chess.management.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -13,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.api.chess.management.constants.ConfigurationConstants;
@@ -25,7 +25,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;	
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		setFilterProcessesUrl(ConfigurationConstants.AUTHENTICATION_URL);
@@ -35,15 +35,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		User user;
+		
+		User user = null;		
+		
 		try {
 			user = new ObjectMapper().readValue(request.getInputStream(), User.class);
-
-			return authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			
+//			userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+		} catch (UsernameNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
+
+		return authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null));
 
 	}
 
@@ -51,9 +55,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
 
-		String token = Jwts.builder().setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+		String token = Jwts.builder()
+				.setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+				.claim(SecurityConstants.AUTHORITIES_KEY, auth.getAuthorities())
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SUPER_SECRET_KEY).compact();
-		response.addHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY, SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
+		response.addHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY,
+				SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
 	}
 }
