@@ -47,4 +47,16 @@ public class Rol implements Serializable {
 		this.name = name;
 	}
 
+	public Rol(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public Rol() {
+		super();
+	}
+	
+	
+
 }
