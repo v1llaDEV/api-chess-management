@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +30,12 @@ public class UserServiceImpl implements UserService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public ResponseEntity<List<User>> getAllUsers() {
-		return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 
 	@Override
-	public ResponseEntity<User> getUserBydId(String id) {
+	public User getUserBydId(String id) {
 		if (id == null) {
 			throw new GeneralException("ID parameter is null. Specifiy one.");
 		}
@@ -45,14 +43,14 @@ public class UserServiceImpl implements UserService {
 		if (!id.toString().chars().allMatch(Character::isDigit)) {
 			throw new GeneralException("ID parameter is not a number.");
 		}
-		
+
 		User userFound = userRepository.findById(Long.valueOf(id))
 				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id: " + id));
-		return new ResponseEntity<>(userFound, HttpStatus.OK);
+		return userFound;
 	}
 
 	@Override
-	public ResponseEntity<User> updateUser(User user, String id) {
+	public User updateUser(User user, String id) {
 		if (id == null) {
 			throw new GeneralException("ID parameter is null. Specifiy one.");
 		}
@@ -97,11 +95,11 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setCreated(userFound.getCreated());
 		userRepository.save(user);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return user;
 	}
 
 	@Override
-	public ResponseEntity<User> createUser(User user) {
+	public User createUser(User user) {
 		// Comprobando que el id debe ser único
 		if (user.getId() != null) {
 			new GeneralException("ID should not be expecified in user creation");
@@ -138,11 +136,11 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setCreated(new Date());
 		userRepository.save(user);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return user;
 	}
 
 	@Override
-	public ResponseEntity<User> deleteUser(String id) {
+	public void deleteUser(String id) {
 		if (id == null || id.isEmpty()) {
 			throw new GeneralException("ID parameter is null. Specifiy one.");
 		}
@@ -154,7 +152,6 @@ public class UserServiceImpl implements UserService {
 		userRepository.findById(Long.valueOf(id))
 				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id: " + id));
 		userRepository.deleteById(Long.valueOf(id));
-		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
 }

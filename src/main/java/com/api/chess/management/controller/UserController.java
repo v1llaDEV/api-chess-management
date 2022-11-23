@@ -3,6 +3,7 @@ package com.api.chess.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,35 +33,33 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
-	@ApiOperation(value="Get all countries", response = Country[].class)
-	@ApiResponses(value = {
-			 @ApiResponse(code = 200, message = "OK"),
-			 @ApiResponse(code = 401, message = "Not authorizated to make this operation"),
-			 @ApiResponse(code = 403, message = "You dont have permissions to make this operation")
-		})
+	@ApiOperation(value = "Get all countries", response = Country[].class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Not authorizated to make this operation"),
+			@ApiResponse(code = 403, message = "You dont have permissions to make this operation") })
 	public ResponseEntity<List<User>> getAllUsers() {
-		return userService.getAllUsers();
+		return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserBydId(@PathVariable String id) {
-		return userService.getUserBydId(id);
+		return new ResponseEntity<User>(userService.getUserBydId(id), HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable String id) {
-		return userService.updateUser(user, id);
+		return new ResponseEntity<User>(userService.updateUser(user, id), HttpStatus.OK);
 
 	}
 
 	@PostMapping
 	public ResponseEntity<User> createUser(@RequestBody User user) {
-		return userService.createUser(user);
+		return new ResponseEntity<User>(userService.createUser(user), HttpStatus.OK);
 
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable String id) {
-		return userService.deleteUser(id);
+		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 }

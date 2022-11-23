@@ -3,6 +3,7 @@ package com.api.chess.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,28 +37,29 @@ public class CountryController {
 			@ApiResponse(code = 403, message = "You dont have permissions to make this operation") })
 	@GetMapping
 	public ResponseEntity<List<Country>> getAllCountries() {
-		return countryService.getAllCountries();
+		return new ResponseEntity<>(countryService.getAllCountries(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Country> getCountryById(@PathVariable String id) {
-		return countryService.getCountryById(id);
+		return new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Country> updateCountry(@RequestBody Country country, @PathVariable String id) {
-		return countryService.updateCountry(country, id);
+		return new ResponseEntity<>(countryService.updateCountry(country, id), HttpStatus.OK);
 
 	}
 
 	@PostMapping
 	public ResponseEntity<Country> createCountry(@RequestBody Country country) {
-		return countryService.createCountry(country);
+		return new ResponseEntity<Country>(countryService.createCountry(country), HttpStatus.OK);
 
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Country> deleteCountry(@PathVariable String id) {
-		return countryService.deleteCountry(id);
+		countryService.deleteCountry(id);
+		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 }

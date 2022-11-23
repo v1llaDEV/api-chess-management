@@ -29,12 +29,12 @@ public class CountryServiceImpl implements CountryService {
 	GameRepository gameRepository;
 
 	@Override
-	public ResponseEntity<List<Country>> getAllCountries() {
-		return new ResponseEntity<>(countryRepository.findAll(), HttpStatus.OK);
+	public List<Country> getAllCountries() {
+		return countryRepository.findAll();
 	}
 
 	@Override
-	public ResponseEntity<Country> getCountryById(String id) {
+	public Country getCountryById(String id) {
 		if (id == null) {
 			throw new GeneralException("ID parameter is null. Specifiy one.");
 		}
@@ -45,11 +45,11 @@ public class CountryServiceImpl implements CountryService {
 
 		Country countryFound = countryRepository.findById(Long.valueOf(id))
 				.orElseThrow(() -> new ResourceNotFoundException("Country not exist with id: " + id));
-		return new ResponseEntity<>(countryFound, HttpStatus.OK);
+		return countryFound;
 	}
 
 	@Override
-	public ResponseEntity<Country> updateCountry(Country country, String id) {
+	public Country updateCountry(Country country, String id) {
 		if (id == null) {
 			throw new GeneralException("ID parameter is null. Specifiy one.");
 		}
@@ -74,11 +74,11 @@ public class CountryServiceImpl implements CountryService {
 		country.setId(Long.valueOf(id));
 		country.setName(country.getName());
 		countryRepository.save(country);
-		return new ResponseEntity<>(country, HttpStatus.OK);
+		return country;
 	}
 
 	@Override
-	public ResponseEntity<Country> createCountry(Country country) {
+	public Country createCountry(Country country) {
 
 		// Comprobando que el id debe ser único
 		if (country.getId() != null) {
@@ -97,11 +97,11 @@ public class CountryServiceImpl implements CountryService {
 
 		country.setName(country.getName());
 		countryRepository.save(country);
-		return new ResponseEntity<>(country, HttpStatus.OK);
+		return country;
 	}
 
 	@Override
-	public ResponseEntity<Country> deleteCountry(String id) {
+	public void deleteCountry(String id) {
 		if (id == null || id.isEmpty()) {
 			throw new GeneralException("ID parameter is null. Specifiy one.");
 		}
@@ -121,9 +121,7 @@ public class CountryServiceImpl implements CountryService {
 		playerRepository.deleteByCountryId(Long.valueOf(id));
 		
 		//eliminamos el país
-		countryRepository.deleteById(Long.valueOf(id));		
-		
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		countryRepository.deleteById(Long.valueOf(id));
 	}
 
 }
