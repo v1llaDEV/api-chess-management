@@ -62,13 +62,13 @@ public class CountryServiceImpl implements CountryService {
 				.orElseThrow(() -> new ResourceNotFoundException("Country with id: " + id + " doesnt exist"));
 
 		// Comprobando que el name debe ser único
-		if (country.getName() == null) {
+		if (country.getName() == null || country.getName().isBlank()) {
 			throw new ResourceAlreadyExistsException("Country name must be defined");
 		}
 
 		Country countryName = countryRepository.findByName(country.getName());
 		if (countryName != null) {
-			throw new ResourceAlreadyExistsException("Country with name: " + countryName + " already exists");
+			throw new ResourceAlreadyExistsException("Country with name: " + countryName.getName() + " already exists");
 		}
 
 		country.setId(Long.valueOf(id));
@@ -86,7 +86,7 @@ public class CountryServiceImpl implements CountryService {
 		}
 
 		// Comprobando que el name debe ser único
-		if (country.getName() == null) {
+		if (country.getName() == null || country.getName().isBlank()) {
 			throw new ResourceAlreadyExistsException("Country name must be defined");
 		}
 
