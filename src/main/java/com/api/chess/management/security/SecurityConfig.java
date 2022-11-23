@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		            "/configuration/security",
 		            "/swagger-ui.html",
 		            "/webjars/**",
-		            ConfigurationConstants.AUTHENTICATION_URL
+		            ConfigurationConstants.AUTHENTICATION_URL + ALL_RESOURCES_MATCHER
 		    };
 		 
 		 final String[] LIST_URLS = {
@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(AUTH_WHITELIST).permitAll()
 			
 			//USERS ROUTES
-			.antMatchers(HttpMethod.POST, ConfigurationConstants.USER_API_URL + ALL_RESOURCES_MATCHER).hasAnyAuthority(SecurityConstants.ROL_ADMIN)
+			.antMatchers(ConfigurationConstants.USER_API_URL + ALL_RESOURCES_MATCHER).hasAnyAuthority(SecurityConstants.ROL_ADMIN)
 			
 			//COUNTRIES, GAMES, OPENNINGS, PLAYERS, RESULTS ROUTES
 			.antMatchers(HttpMethod.POST, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
