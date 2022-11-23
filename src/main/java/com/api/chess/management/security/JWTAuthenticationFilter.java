@@ -8,12 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import com.api.chess.management.constants.ConfigurationConstants;
 import com.api.chess.management.constants.SecurityConstants;
@@ -25,7 +27,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private AuthenticationManager authenticationManager;	
+	private AuthenticationManager authenticationManager;
+	
+	@Value("${jwt.secret.key}")
+	private String jwtSecretKey;
+	
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		setFilterProcessesUrl(ConfigurationConstants.AUTHENTICATION_URL);
@@ -59,7 +65,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
 				.claim(SecurityConstants.AUTHORITIES_KEY, auth.getAuthorities())
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SUPER_SECRET_KEY).compact();
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME).compact();
 		response.addHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY,
 				SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
 	}

@@ -6,4 +6,5 @@ import com.api.chess.management.entity.Country;
 
 public interface CountryRepository extends JpaRepository<Country, Long>{
 
+	public Country findByName(String name);
 }

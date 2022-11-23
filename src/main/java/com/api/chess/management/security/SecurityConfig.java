@@ -28,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		 final String ALL_RESOURCES_MATCHER = "/**"; 
+		
 		
 		 final String[] AUTH_WHITELIST = {
 		            "/v2/api-docs",
@@ -41,11 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    };
 		 
 		 final String[] LIST_URLS = {
-				 ConfigurationConstants.COUNTRY_API_URL,
-				 ConfigurationConstants.GAME_API_URL,
-				 ConfigurationConstants.OPENNING_API_URL,
-				 ConfigurationConstants.PLAYER_API_URL,
-				 ConfigurationConstants.RESULT_API_URL 
+				 ConfigurationConstants.COUNTRY_API_URL + ALL_RESOURCES_MATCHER,
+				 ConfigurationConstants.GAME_API_URL + ALL_RESOURCES_MATCHER,
+				 ConfigurationConstants.OPENNING_API_URL + ALL_RESOURCES_MATCHER,
+				 ConfigurationConstants.PLAYER_API_URL + ALL_RESOURCES_MATCHER,
+				 ConfigurationConstants.RESULT_API_URL + ALL_RESOURCES_MATCHER
 		 };
 		
 		httpSecurity
@@ -57,17 +59,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			//ALL PERMISSIONS
 			.antMatchers(AUTH_WHITELIST).permitAll()
 			
-			//ADMIN PERMISSIONS
-			.antMatchers(ConfigurationConstants.USER_API_URL + "/**").hasAuthority(SecurityConstants.ROL_ADMIN)
+			//USERS ROUTES
+			.antMatchers(HttpMethod.POST, ConfigurationConstants.USER_API_URL + ALL_RESOURCES_MATCHER).hasAnyAuthority(SecurityConstants.ROL_ADMIN)
 			
-			//READ-LIST PERMISSIONS
-			.antMatchers(HttpMethod.POST, LIST_URLS).hasAuthority(SecurityConstants.ROL_READ_WRITE)
-			.antMatchers(HttpMethod.PUT, LIST_URLS).hasAuthority(SecurityConstants.ROL_READ_WRITE)
-			.antMatchers(HttpMethod.DELETE, LIST_URLS).hasAuthority(SecurityConstants.ROL_READ_WRITE)
-			.antMatchers(HttpMethod.GET, LIST_URLS).hasAuthority(SecurityConstants.ROL_READ_WRITE)
-			
-			//READ PERMISSIONS
-			.antMatchers(HttpMethod.GET, LIST_URLS).hasAuthority(SecurityConstants.ROL_READ)
+			//COUNTRIES, GAMES, OPENNINGS, PLAYERS, RESULTS ROUTES
+			.antMatchers(HttpMethod.POST, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
+			.antMatchers(HttpMethod.PUT, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
+			.antMatchers(HttpMethod.DELETE, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
+			.antMatchers(HttpMethod.GET, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE, SecurityConstants.ROL_READ)
 
 			.and()
 			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
