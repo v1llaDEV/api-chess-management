@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class UserController {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
-	@GetMapping
+	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<User> getAllUsers() {
 		log.info("User {} calling getAllUsers service",
@@ -56,7 +57,7 @@ public class UserController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@GetMapping("/{id}")
+	@GetMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public User getUserBydId(@PathVariable String id) {
 		log.info("User {} calling getUserBydId service",
@@ -71,7 +72,7 @@ public class UserController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@PutMapping("/{id}")
+	@PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public User updateUser(@RequestBody User user, @PathVariable String id) {
 		log.info("User {} calling updateUser service",
@@ -87,7 +88,7 @@ public class UserController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public User createUser(@RequestBody User user) {
 		log.info("User {} calling createUser service",
@@ -103,7 +104,7 @@ public class UserController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@DeleteMapping("/{id}")
+	@DeleteMapping(name="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteUser(@PathVariable String id) {
 		log.info("User {} calling deleteUser service",

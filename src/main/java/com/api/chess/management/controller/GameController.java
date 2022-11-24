@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class GameController {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
-	@GetMapping
+	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Game> getAllGames() {
 		log.info("User {} calling getAllGames service",
@@ -56,7 +57,7 @@ public class GameController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@GetMapping("/{id}")
+	@GetMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Game getGameById(@PathVariable String id) {
 		log.info("User {} calling getGameById service",
@@ -71,7 +72,7 @@ public class GameController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@PutMapping("/{id}")
+	@PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Game updateGame(@RequestBody Game country, @PathVariable String id) {
 		log.info("User {} calling updateGame service",
@@ -103,7 +104,7 @@ public class GameController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@DeleteMapping("/{id}")
+	@DeleteMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteGame(@PathVariable String id) {
 		log.info("User {} calling deleteGame service",

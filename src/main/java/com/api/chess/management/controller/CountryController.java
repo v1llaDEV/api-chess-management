@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class CountryController {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
-	@GetMapping
+	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Country> getAllCountries() {
 
@@ -57,7 +58,7 @@ public class CountryController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@GetMapping("/{id}")
+	@GetMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Country getCountryById(@PathVariable String id) {
 		log.info("User {} calling getCountryById service",
@@ -72,7 +73,7 @@ public class CountryController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@PutMapping("/{id}")
+	@PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Country updateCountry(@RequestBody Country country, @PathVariable String id) {
 		log.info("User {} calling updateCountry service",
@@ -88,7 +89,7 @@ public class CountryController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Country createCountry(@RequestBody Country country) {
 		log.info("User {} calling createCountry service",
@@ -104,7 +105,7 @@ public class CountryController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
-	@DeleteMapping("/{id}")
+	@DeleteMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteCountry(@PathVariable String id) {
 		log.info("User {} calling deleteCountry service",
