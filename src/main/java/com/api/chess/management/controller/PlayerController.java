@@ -22,6 +22,9 @@ import com.api.chess.management.entity.Player;
 import com.api.chess.management.service.PlayerService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(ConfigurationConstants.PLAYER_API_URL)
@@ -33,6 +36,10 @@ public class PlayerController {
 
 	private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
+	@ApiOperation(value = "Get all players", response = Player[].class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
 	public ResponseEntity<List<Player>> getAllPlayers() {
 		log.info("User {} calling getAllPlayers service",
@@ -40,6 +47,11 @@ public class PlayerController {
 		return new ResponseEntity<List<Player>>(playerService.getAllPlayers(), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get player by id", response = Player.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.") })
 	@GetMapping("/{id}")
 	public ResponseEntity<Player> getPlayerById(@PathVariable String id) {
 		log.info("User {} calling getPlayerById service",
@@ -47,6 +59,11 @@ public class PlayerController {
 		return new ResponseEntity<Player>(playerService.getPlayerById(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Update player", response = Player.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.") })
 	@PutMapping("/{id}")
 	public ResponseEntity<Player> updatePlayer(@RequestBody Player player, @PathVariable String id) {
 		log.info("User {} calling updatePlayer service",
@@ -55,6 +72,11 @@ public class PlayerController {
 
 	}
 
+	@ApiOperation(value = "Create player", response = Player.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.") })
 	@PostMapping
 	public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
 		log.info("User {} calling createPlayer service",
@@ -63,6 +85,11 @@ public class PlayerController {
 
 	}
 
+	@ApiOperation(value = "Delete player", response = Void.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.") })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Player> deletePlayer(@PathVariable String id) {
 		log.info("User {} calling deletePlayer service",

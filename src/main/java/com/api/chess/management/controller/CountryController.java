@@ -37,9 +37,10 @@ public class CountryController {
 	private static final Logger log = LoggerFactory.getLogger(CountryController.class);
 
 	@ApiOperation(value = "Get all countries", response = Country[].class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 401, message = "Not authorizated to make this operation"),
-			@ApiResponse(code = 403, message = "You dont have permissions to make this operation") })
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
 	public ResponseEntity<List<Country>> getAllCountries() {
 
@@ -48,6 +49,13 @@ public class CountryController {
 		return new ResponseEntity<>(countryService.getAllCountries(), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get country by id", response = Country.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping("/{id}")
 	public ResponseEntity<Country> getCountryById(@PathVariable String id) {
 		log.info("User {} calling getCountryById service",
@@ -55,6 +63,13 @@ public class CountryController {
 		return new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Update country", response = Country.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping("/{id}")
 	public ResponseEntity<Country> updateCountry(@RequestBody Country country, @PathVariable String id) {
 		log.info("User {} calling updateCountry service",
@@ -63,6 +78,13 @@ public class CountryController {
 
 	}
 
+	@ApiOperation(value = "Create country", response = Country.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping
 	public ResponseEntity<Country> createCountry(@RequestBody Country country) {
 		log.info("User {} calling createCountry service",
@@ -71,6 +93,13 @@ public class CountryController {
 
 	}
 
+	@ApiOperation(value = "Delete country", response = Void.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Country> deleteCountry(@PathVariable String id) {
 		log.info("User {} calling deleteCountry service",

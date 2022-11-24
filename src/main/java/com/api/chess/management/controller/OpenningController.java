@@ -17,6 +17,9 @@ import com.api.chess.management.entity.Openning;
 import com.api.chess.management.service.OpenningService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(ConfigurationConstants.OPENNING_API_URL)
@@ -28,9 +31,14 @@ public class OpenningController {
 	
 	private static final Logger log = LoggerFactory.getLogger(OpenningController.class);
 
+	@ApiOperation(value = "Get all opennings", response = Openning[].class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
-	public ResponseEntity<List<Openning>> getAllOpenning() {
-		log.info("User {} calling getAllOpenning service",
+	public ResponseEntity<List<Openning>> getAllOpennings() {
+		log.info("User {} calling getAllOpennings service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return new ResponseEntity<List<Openning>>(openningService.getAllOpennings(), HttpStatus.OK);
 	}

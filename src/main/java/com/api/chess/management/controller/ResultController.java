@@ -17,6 +17,9 @@ import com.api.chess.management.entity.Result;
 import com.api.chess.management.service.ResultService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(ConfigurationConstants.RESULT_API_URL)
@@ -28,6 +31,11 @@ public class ResultController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ResultController.class);
 
+	@ApiOperation(value = "Get all results", response = Result[].class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
 	public ResponseEntity<List<Result>> getAllResults() {
 		log.info("User {} calling getAllResults service",

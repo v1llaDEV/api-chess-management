@@ -22,6 +22,9 @@ import com.api.chess.management.entity.Game;
 import com.api.chess.management.service.GameService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(ConfigurationConstants.GAME_API_URL)
@@ -33,6 +36,11 @@ public class GameController {
 	@Autowired
 	private GameService gameService;
 
+	@ApiOperation(value = "Get all games", response = Game[].class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
 	public ResponseEntity<List<Game>> getAllGames() {
 		log.info("User {} calling getAllGames service",
@@ -40,32 +48,60 @@ public class GameController {
 		return new ResponseEntity<>(gameService.getAllCountries(), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get game by id", response = Game.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping("/{id}")
-	public ResponseEntity<Game> getCountryById(@PathVariable String id) {
-		log.info("User {} calling getCountryById service",
+	public ResponseEntity<Game> getGameById(@PathVariable String id) {
+		log.info("User {} calling getGameById service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return new ResponseEntity<Game>(gameService.getGameById(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get game", response = Game.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping("/{id}")
-	public ResponseEntity<Game> updateCountry(@RequestBody Game country, @PathVariable String id) {
-		log.info("User {} calling updateCountry service",
+	public ResponseEntity<Game> updateGame(@RequestBody Game country, @PathVariable String id) {
+		log.info("User {} calling updateGame service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return new ResponseEntity<Game>(gameService.updateGame(country, id), HttpStatus.OK);
 
 	}
 
+	@ApiOperation(value = "Create game", response = Game.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping
-	public ResponseEntity<Game> createCountry(@RequestBody Game country) {
-		log.info("User {} calling createCountry service",
+	public ResponseEntity<Game> createGame(@RequestBody Game country) {
+		log.info("User {} calling createGame service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return new ResponseEntity<Game>(gameService.createGame(country), HttpStatus.OK);
 
 	}
 
+	@ApiOperation(value = "Delete", response = Void.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Game> deleteCountry(@PathVariable String id) {
-		log.info("User {} calling deleteCountry service",
+	public ResponseEntity<Game> deleteGame(@PathVariable String id) {
+		log.info("User {} calling deleteGame service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		gameService.deleteGame(id);
 		return new ResponseEntity<>(null, HttpStatus.OK);

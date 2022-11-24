@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.chess.management.constants.ConfigurationConstants;
-import com.api.chess.management.entity.Country;
 import com.api.chess.management.entity.User;
 import com.api.chess.management.service.UserService;
 
@@ -37,17 +36,24 @@ public class UserController {
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-	@GetMapping
-	@ApiOperation(value = "Get all countries", response = Country[].class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 401, message = "Not authorizated to make this operation"),
-			@ApiResponse(code = 403, message = "You dont have permissions to make this operation") })
+	@ApiOperation(value = "Get all users", response = User[].class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	public ResponseEntity<List<User>> getAllUsers() {
 		log.info("User {} calling getAllUsers service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Get user by id", response = User.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserBydId(@PathVariable String id) {
 		log.info("User {} calling getUserBydId service",
@@ -55,6 +61,13 @@ public class UserController {
 		return new ResponseEntity<User>(userService.getUserBydId(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Update user", response = User.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable String id) {
 		log.info("User {} calling updateUser service",
@@ -63,6 +76,13 @@ public class UserController {
 
 	}
 
+	@ApiOperation(value = "Create user", response = User.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping
 	public ResponseEntity<User> createUser(@RequestBody User user) {
 		log.info("User {} calling createUser service",
@@ -71,6 +91,13 @@ public class UserController {
 
 	}
 
+	@ApiOperation(value = "Delete user", response = Void.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
+			@ApiResponse(code = 404, message = "Not found.")})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable String id) {
 		log.info("User {} calling deleteUser service",
