@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.chess.management.entity.Country;
-import com.api.chess.management.exception.GeneralException;
-import com.api.chess.management.exception.ResourceAlreadyExistsException;
-import com.api.chess.management.exception.ResourceNotFoundException;
 import com.api.chess.management.repository.CountryRepository;
 import com.api.chess.management.repository.GameRepository;
 import com.api.chess.management.repository.PlayerRepository;
 import com.api.chess.management.service.CountryService;
+import com.api.chess.management.validators.CountryValidator;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -33,44 +31,16 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public Country getCountryById(String id) {
-		if (id == null) {
-			throw new GeneralException("ID parameter is null. Specifiy one.");
-		}
-
-		if (!id.toString().chars().allMatch(Character::isDigit)) {
-			throw new GeneralException("ID parameter is not a number.");
-		}
-
-		Country countryFound = countryRepository.findById(Long.valueOf(id))
-				.orElseThrow(() -> new ResourceNotFoundException("Country not exist with id: " + id));
+		Country countryFound = CountryValidator.validateIdParameter(id, countryRepository);
 		return countryFound;
 	}
 
 	@Override
 	public Country updateCountry(Country country, String id) {
-		if (id == null) {
-			throw new GeneralException("ID parameter is null. Specifiy one.");
-		}
-
-		if (!id.toString().chars().allMatch(Character::isDigit)) {
-			throw new GeneralException("ID parameter is not a number.");
-		}
-
-		countryRepository.findById(Long.valueOf(id))
-				.orElseThrow(() -> new ResourceNotFoundException("Country with id: " + id + " doesnt exist"));
-
-		// Comprobando que el name debe ser único
-		if (country.getName() == null || country.getName().isBlank()) {
-			throw new ResourceAlreadyExistsException("Country name must be defined");
-		}
-
-		Country countryName = countryRepository.findByName(country.getName());
-		if (countryName != null) {
-			throw new ResourceAlreadyExistsException("Country with name: " + countryName.getName() + " already exists");
-		}
+		CountryValidator.validateIdParameter(id, countryRepository);
+		CountryValidator.validateNameParameter(country, countryRepository);
 
 		country.setId(Long.valueOf(id));
-		country.setName(country.getName());
 		countryRepository.save(country);
 		return country;
 	}
@@ -78,38 +48,16 @@ public class CountryServiceImpl implements CountryService {
 	@Override
 	public Country createCountry(Country country) {
 
-		// Comprobando que el id debe ser único
-		if (country.getId() != null) {
-			throw new GeneralException("ID should not be expecified in country creation");
-		}
+		CountryValidator.validateNameParameter(country, countryRepository);
 
-		// Comprobando que el name debe ser único
-		if (country.getName() == null || country.getName().isBlank()) {
-			throw new ResourceAlreadyExistsException("Country name must be defined");
-		}
-
-		Country countryName = countryRepository.findByName(country.getName());
-		if (countryName != null) {
-			throw new ResourceAlreadyExistsException("Country with name: " + country.getName() + " already exists");
-		}
-
-		country.setName(country.getName());
+		country.setId(null);
 		countryRepository.save(country);
 		return country;
 	}
 
 	@Override
 	public void deleteCountry(String id) {
-		if (id == null || id.isEmpty()) {
-			throw new GeneralException("ID parameter is null. Specifiy one.");
-		}
-
-		if (!id.toString().chars().allMatch(Character::isDigit)) {
-			throw new GeneralException("ID parameter is not a number.");
-		}
-
-		countryRepository.findById(Long.valueOf(id))
-				.orElseThrow(() -> new ResourceNotFoundException("Country doesnt exist with id: " + id));
+		CountryValidator.validateIdParameter(id, countryRepository);
 
 		// eliminamos las partidas con ese jugador
 		gameRepository.deleteWhitePlayerById(Long.valueOf(id));
