@@ -3,8 +3,6 @@ package com.api.chess.management.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.api.chess.management.entity.Country;
@@ -21,10 +19,10 @@ public class CountryServiceImpl implements CountryService {
 
 	@Autowired
 	CountryRepository countryRepository;
-	
+
 	@Autowired
 	PlayerRepository playerRepository;
-	
+
 	@Autowired
 	GameRepository gameRepository;
 
@@ -112,15 +110,15 @@ public class CountryServiceImpl implements CountryService {
 
 		countryRepository.findById(Long.valueOf(id))
 				.orElseThrow(() -> new ResourceNotFoundException("Country doesnt exist with id: " + id));
-		
-		//eliminamos las partidas con ese jugador
+
+		// eliminamos las partidas con ese jugador
 		gameRepository.deleteWhitePlayerById(Long.valueOf(id));
 		gameRepository.deleteBlackPlayerById(Long.valueOf(id));
-		
-		//eliminamos los jugadores
+
+		// eliminamos los jugadores
 		playerRepository.deleteByCountryId(Long.valueOf(id));
-		
-		//eliminamos el país
+
+		// eliminamos el país
 		countryRepository.deleteById(Long.valueOf(id));
 	}
 

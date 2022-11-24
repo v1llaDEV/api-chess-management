@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.chess.management.entity.Game;
-import com.api.chess.management.exception.GeneralException;
-import com.api.chess.management.exception.ResourceNotFoundException;
 import com.api.chess.management.repository.GameRepository;
 import com.api.chess.management.repository.PlayerRepository;
 import com.api.chess.management.repository.ResultRepository;
@@ -15,14 +13,14 @@ import com.api.chess.management.service.GameService;
 import com.api.chess.management.validators.GameValidator;
 
 @Service
-public class GameServiceImpl implements GameService{
+public class GameServiceImpl implements GameService {
 
 	@Autowired
 	GameRepository gameRepository;
-	
+
 	@Autowired
 	PlayerRepository playerRepository;
-	
+
 	@Autowired
 	ResultRepository resultRepository;
 
@@ -33,16 +31,7 @@ public class GameServiceImpl implements GameService{
 
 	@Override
 	public Game getGameById(String id) {
-		if (id == null) {
-			throw new GeneralException("id parameter is null. Specifiy one");
-		}
-
-		if (!id.toString().chars().allMatch(Character::isDigit)) {
-			throw new GeneralException("id parameter is not a number");
-		}
-
-		Game gameFound = gameRepository.findById(Long.valueOf(id))
-				.orElseThrow(() -> new ResourceNotFoundException("Game doesnt exist with id: " + id));
+		Game gameFound = GameValidator.validateIdParameter(id, gameRepository);
 		return gameFound;
 	}
 
@@ -73,8 +62,7 @@ public class GameServiceImpl implements GameService{
 	public void deleteGame(String id) {
 		GameValidator.validateIdParameter(id, gameRepository);
 		gameRepository.deleteById(Long.valueOf(id));
-		
+
 	}
-	
-	
+
 }
