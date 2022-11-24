@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.chess.management.constants.ConfigurationConstants;
@@ -42,11 +42,12 @@ public class CountryController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
-	public ResponseEntity<List<Country>> getAllCountries() {
+	@ResponseStatus(HttpStatus.OK)
+	public List<Country> getAllCountries() {
 
 		log.info("User {} calling getAllCountries service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<>(countryService.getAllCountries(), HttpStatus.OK);
+		return countryService.getAllCountries();
 	}
 
 	@ApiOperation(value = "Get country by id", response = Country.class)
@@ -57,10 +58,11 @@ public class CountryController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping("/{id}")
-	public ResponseEntity<Country> getCountryById(@PathVariable String id) {
+	@ResponseStatus(HttpStatus.OK)
+	public Country getCountryById(@PathVariable String id) {
 		log.info("User {} calling getCountryById service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
+		return countryService.getCountryById(id);
 	}
 
 	@ApiOperation(value = "Update country", response = Country.class)
@@ -71,10 +73,11 @@ public class CountryController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping("/{id}")
-	public ResponseEntity<Country> updateCountry(@RequestBody Country country, @PathVariable String id) {
+	@ResponseStatus(HttpStatus.OK)
+	public Country updateCountry(@RequestBody Country country, @PathVariable String id) {
 		log.info("User {} calling updateCountry service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<>(countryService.updateCountry(country, id), HttpStatus.OK);
+		return countryService.updateCountry(country, id);
 
 	}
 
@@ -86,10 +89,11 @@ public class CountryController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping
-	public ResponseEntity<Country> createCountry(@RequestBody Country country) {
+	@ResponseStatus(HttpStatus.OK)
+	public Country createCountry(@RequestBody Country country) {
 		log.info("User {} calling createCountry service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<Country>(countryService.createCountry(country), HttpStatus.OK);
+		return countryService.createCountry(country);
 
 	}
 
@@ -101,10 +105,10 @@ public class CountryController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Country> deleteCountry(@PathVariable String id) {
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteCountry(@PathVariable String id) {
 		log.info("User {} calling deleteCountry service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		countryService.deleteCountry(id);
-		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 }

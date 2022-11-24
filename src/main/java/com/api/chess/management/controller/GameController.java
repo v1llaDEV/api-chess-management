@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.chess.management.constants.ConfigurationConstants;
@@ -42,10 +42,11 @@ public class GameController {
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping
-	public ResponseEntity<List<Game>> getAllGames() {
+	@ResponseStatus(HttpStatus.OK)
+	public List<Game> getAllGames() {
 		log.info("User {} calling getAllGames service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<>(gameService.getAllCountries(), HttpStatus.OK);
+		return gameService.getAllCountries();
 	}
 
 	@ApiOperation(value = "Get game by id", response = Game.class)
@@ -56,10 +57,11 @@ public class GameController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping("/{id}")
-	public ResponseEntity<Game> getGameById(@PathVariable String id) {
+	@ResponseStatus(HttpStatus.OK)
+	public Game getGameById(@PathVariable String id) {
 		log.info("User {} calling getGameById service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<Game>(gameService.getGameById(id), HttpStatus.OK);
+		return gameService.getGameById(id);
 	}
 
 	@ApiOperation(value = "Get game", response = Game.class)
@@ -70,10 +72,11 @@ public class GameController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping("/{id}")
-	public ResponseEntity<Game> updateGame(@RequestBody Game country, @PathVariable String id) {
+	@ResponseStatus(HttpStatus.OK)
+	public Game updateGame(@RequestBody Game country, @PathVariable String id) {
 		log.info("User {} calling updateGame service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<Game>(gameService.updateGame(country, id), HttpStatus.OK);
+		return gameService.updateGame(country, id);
 
 	}
 
@@ -85,10 +88,11 @@ public class GameController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping
-	public ResponseEntity<Game> createGame(@RequestBody Game country) {
+	@ResponseStatus(HttpStatus.OK)
+	public Game createGame(@RequestBody Game country) {
 		log.info("User {} calling createGame service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
-		return new ResponseEntity<Game>(gameService.createGame(country), HttpStatus.OK);
+		return gameService.createGame(country);
 
 	}
 
@@ -100,10 +104,10 @@ public class GameController {
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 404, message = "Not found.")})
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Game> deleteGame(@PathVariable String id) {
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteGame(@PathVariable String id) {
 		log.info("User {} calling deleteGame service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		gameService.deleteGame(id);
-		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 }
