@@ -3,6 +3,10 @@ package com.api.chess.management.validators;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.api.chess.management.entity.Rol;
 import com.api.chess.management.entity.User;
 import com.api.chess.management.exception.GeneralException;
@@ -12,12 +16,19 @@ import com.api.chess.management.repository.RolRepository;
 import com.api.chess.management.repository.UserRepository;
 
 public class UserValidator {
+
+	private static final Logger log = LoggerFactory.getLogger(CountryValidator.class);
+
 	public static User validateIdParameter(String id, UserRepository userRepository) {
 		if (id == null) {
+			log.info("User {} failed at UserValidator.validateIdParameter because id parameter is null ",
+					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new GeneralException("id parameter is null. Specifiy one.");
 		}
 
 		if (!id.toString().chars().allMatch(Character::isDigit)) {
+			log.info("User {} failed at UserValidator.validateIdParameter because id parameter is not a number",
+					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new GeneralException("id parameter is not a number.");
 		}
 
@@ -29,7 +40,9 @@ public class UserValidator {
 	}
 
 	public static void validateUsernameParameter(User user, UserRepository userRepository) {
-		if (user.getUsername() == null) {
+		if (user.getUsername() == null || user.getUsername().isBlank()) {
+			log.info("User {} failed at UserValidator.validateUsernameParameter because username is null ",
+					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new ResourceAlreadyExistsException("Username must be defined");
 		}
 
@@ -42,6 +55,8 @@ public class UserValidator {
 	public static List<Rol> validateRolParameter(User user, RolRepository rolRepository) {
 		// Comprobando que se le indica al menos 1 rol
 		if (user.getRoles() == null || user.getRoles().isEmpty()) {
+			log.info("User {} failed at UserValidator.validateRolParameter because rol list is null ",
+					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new ResourceAlreadyExistsException("User definition must have at least 1 rol defined");
 		}
 		// Buscando el id del rol y creando la lista de roles para asociarselo al
@@ -50,7 +65,9 @@ public class UserValidator {
 		for (Rol rol : user.getRoles()) {
 			Rol rolFound = rolRepository.findByRolName(rol.getName());
 			if (rolFound == null) {
-				throw new ResourceAlreadyExistsException("Rol " + rol.getName() + " doesnt exist");
+				log.info("User {} failed at UserValidator.validateRolParameter because rol with name {} doesnt exists",
+						SecurityContextHolder.getContext().getAuthentication().getName(), rol.getName());
+				throw new ResourceAlreadyExistsException("Rol " + rol.getName() + " doesnt exists");
 			}
 
 			rolList.add(new Rol(rolFound.getId(), rolFound.getName()));

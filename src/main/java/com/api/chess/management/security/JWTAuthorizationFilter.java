@@ -10,22 +10,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import com.api.chess.management.constants.SecurityConstants;
 
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-	
-	
 
 	public JWTAuthorizationFilter(AuthenticationManager authManager) {
 		super(authManager);
@@ -48,21 +44,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY);
 		if (token != null) {
 			// Se procesa el token y se recupera el usuario.
-			String user = Jwts.parser()
-						.setSigningKey(SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME)
-						.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, ""))
-						.getBody()
-						.getSubject();
-			
-			ArrayList<HashMap<String, String>> roles  =  (ArrayList<HashMap<String, String>>) Jwts.parser()
+			String user = Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME)
+					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, "")).getBody().getSubject();
+
+			ArrayList<HashMap<String, String>> roles = (ArrayList<HashMap<String, String>>) Jwts.parser()
 					.setSigningKey(SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME)
-					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, ""))
-					.getBody()
-					.get("roles");
-			
+					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, "")).getBody().get("roles");
+
 			List<GrantedAuthority> rolList = new ArrayList<GrantedAuthority>();
-			
-			for(HashMap<String, String> rol : roles) {
+
+			for (HashMap<String, String> rol : roles) {
 				rolList.add(new SimpleGrantedAuthority((String) rol.get("authority")));
 			}
 

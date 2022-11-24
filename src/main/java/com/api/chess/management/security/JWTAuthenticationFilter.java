@@ -7,15 +7,19 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import com.api.chess.management.constants.ConfigurationConstants;
 import com.api.chess.management.constants.SecurityConstants;
@@ -28,10 +32,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
-	
+
 	@Value("${jwt.secret.key}")
 	private String jwtSecretKey;
-	
+
+	private static final Logger log = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		setFilterProcessesUrl(ConfigurationConstants.AUTHENTICATION_URL);
@@ -41,19 +46,20 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		
-		User user = null;		
-		
+
+		User user = null;
+
 		try {
 			user = new ObjectMapper().readValue(request.getInputStream(), User.class);
-			
+
 //			userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 		} catch (UsernameNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+		log.info("Attemp authentication with username: {}", user.getUsername());
 
-		return authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null));
+		return authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null));
 
 	}
 
@@ -68,5 +74,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME).compact();
 		response.addHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY,
 				SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
+
+	    addingUserToSecurityContext(request, auth);
+		
+		log.info("Sucessful authentication with username: {}",
+				((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
+	}
+
+	private void addingUserToSecurityContext(HttpServletRequest request, Authentication auth) {
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+	    securityContext.setAuthentication(auth);
+
+	    // Create a new session and add the security context.
+	    HttpSession session = request.getSession(true);
+	    session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 	}
 }
