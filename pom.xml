@@ -9,9 +9,9 @@
 		<version>2.7.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.cursos.springboot.microservicios</groupId>
-	<artifactId>proyecto-gestion-ajedrez</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>com.api-chess-management</groupId>
+	<artifactId>api-chess-management</artifactId>
+	<version>0.0.1</version>
 	<name>proyecto-gestion-ajedrez</name>
 	<description>Proyecto de gestión de partidas de ajedrez</description>
 	<properties>
