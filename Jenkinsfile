@@ -3,7 +3,7 @@ node{
        git credentialsId: 'git-creds', url: 'https://github.com/v1llaDEV/api-chess-management'
    }
    stage('BUILDING'){
-     def mvnHome = tool name: 'maven-3', type: 'maven'
+     def mvnHome = tool name: 'Maven-3.8.6', type: 'maven'
      def mvnCMD = "${mvnHome}/bin/mvn"
      sh "${mvnCMD} clean package"
    }
