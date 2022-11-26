@@ -4,7 +4,8 @@ node{
    }
    stage('BUILDING'){
      def mvnHome = tool name: 'Maven-3.8.6', type: 'maven'
-     sh "${mvnHome} clean package"
+     def mvnCMD = "${mvnHome}/bin/mvn"
+     sh "${mvnCMD} clean package"
    }
    stage('DOCKERIZE IMAGE'){
      sh 'docker build -t kammana/my-app:2.0.0 .'
