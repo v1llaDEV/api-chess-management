@@ -1,8 +1,7 @@
 pipeline{
 	agent any
 		tools {
-			maven "MAVEN"
-			jdk "JDK"
+			maven "Maven-3.8.6"
 		}
 	stages {
 	   stage('SETTING GIT CREDENTIALS'){
@@ -18,8 +17,7 @@ pipeline{
 	   }
 	   stage('DOCKERIZE IMAGE'){
 		   steps{
-				sh 'docker build -t kammana/my-app:2.0.0 .'
-			 withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
+				sh 'docker build -t kammana/my-app:2.0.0 .' withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
 				sh "docker login -u kammana -p ${dockerHubPwd}"
 			 }
 			 sh 'docker push kammana/my-app:2.0.0'
@@ -27,8 +25,7 @@ pipeline{
 	   }
 	   stage('RUN IN CONTAINER'){
 		   steps{
-				 def dockerRun = 'docker run -p 8080:8080 -d --name my-app kammana/my-app:2.0.0'
-					sshagent(['dev-server']) {
+				 def dockerRun = 'docker run -p 8080:8080 -d --name my-app kammana/my-app:2.0.0' sshagent(['dev-server']) {
 				 sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.18.198 ${dockerRun}"
 				}
 		   }
