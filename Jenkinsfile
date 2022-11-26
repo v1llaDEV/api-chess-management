@@ -1,11 +1,10 @@
-node{
+pipeline{
+
    stage('SETTING GIT CREDENTIALS'){
        git credentialsId: 'git-creds', url: 'https://github.com/v1llaDEV/api-chess-management'
    }
    stage('BUILDING'){
-     def mvnHome = tool name: 'Maven-3.8.6', type: 'maven'
-     def mvnCMD = "${mvnHome}/bin/mvn"
-     sh "${mvnCMD} clean package"
+     sh "mvn clean package"
    }
    stage('DOCKERIZE IMAGE'){
      sh 'docker build -t kammana/my-app:2.0.0 .'
