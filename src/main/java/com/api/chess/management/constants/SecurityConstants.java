@@ -19,7 +19,7 @@ public class SecurityConstants {
 	
 	public static String JWT_SECRET_KEY_PROPERTY_NAME = "JWT_SECRET_KEY";
 	
-	@Value("${jwt.secret.key}")
+	@Value("${jwt.secret.key}:1234")
 	public void setJwtSecretKey(String name) {
 		JWT_SECRET_KEY_PROPERTY_NAME = name;
 	}

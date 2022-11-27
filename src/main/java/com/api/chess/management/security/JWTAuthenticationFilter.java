@@ -33,9 +33,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	private AuthenticationManager authenticationManager;
 
-	@Value("${jwt.secret.key}")
-	private String jwtSecretKey;
-
 	private static final Logger log = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
