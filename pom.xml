@@ -14,6 +14,7 @@
 	<version>0.0.1</version>
 	<name>proyecto-gestion-ajedrez</name>
 	<description>Proyecto de gestión de partidas de ajedrez</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
