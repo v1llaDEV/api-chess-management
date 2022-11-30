@@ -1,4 +1,4 @@
-FROM tomcat:8
-EXPOSE 8080
-COPY target/*.war /usr/local/tomcat/webapps/
-CMD ["catalina.sh", "run"]
+FROM openjdk:8
+EXPOSE 8080:8080
+COPY target/api-chess-management.jar /usr/local/service/api-chess-management.jar
+ENTRYPOINT ["java","-jar","/usr/local/service/service/api-chess-management.jar"]
