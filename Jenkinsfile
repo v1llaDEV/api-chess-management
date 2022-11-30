@@ -11,6 +11,7 @@ pipeline {
             steps{
                 echo 'Building ....123'
                 git 'https://github.com/v1llaDEV/api-chess-management.git'
+				git 'checkout develop'
                 bat 'mvn clean package -Dmaven.test.skip'
 
             }
