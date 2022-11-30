@@ -2,9 +2,9 @@ package com.api.chess.management.constants;
 
 public class ConfigurationConstants {
 
-	public final static String API_BASE_PATH = "/api/v1/";
+	public final static String API_BASE_PATH = "/api-chess-management/api/v1/";
 	
-	public final static String AUTHENTICATION_URL = "/api/v1/" + "authentication";
+	public final static String AUTHENTICATION_URL = API_BASE_PATH + "authentication";
 	
 	public final static String SWAGGER_URL = "/swagger-ui.html";
 	
