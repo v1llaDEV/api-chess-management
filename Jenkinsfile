@@ -9,7 +9,6 @@ pipeline {
     stages {
         stage('BUILD'){
             steps{
-                echo 'Building branch name: %BRANCH%'
                 git 'https://github.com/v1llaDEV/api-chess-management.git'
                 bat 'mvn clean package -Dmaven.test.skip'
 
