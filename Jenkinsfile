@@ -10,25 +10,25 @@ pipeline {
         stage('BUILD'){
             steps{
                 git 'https://github.com/v1llaDEV/api-chess-management.git'
-                bat 'mvn clean package -Dmaven.test.skip'
+                sh 'mvn clean package -Dmaven.test.skip'
 
             }
         }
         stage('DOCKERIZE'){
             steps{
                 echo 'clean old containers'
-                bat 'docker rm api-chess-management --force'
+                sh 'docker rm api-chess-management --force'
                 echo 'clean old images'
-                bat 'docker rmi api-chess-management --force'
+                sh 'docker rmi api-chess-management --force'
                 echo 'Build image'
-                bat 'docker build . -t api-chess-management'
+                sh 'docker build . -t api-chess-management'
             }
         }
 
         stage('DEPLOY'){
             steps{
                  echo 'Deploying'
-                  bat 'docker run -p 8080:8080 -d --name api-chess-management --network tomcat-mysql-network api-chess-management'
+                  sh 'docker run -p 8080:8080 -d --name api-chess-management --network tomcat-mysql-network api-chess-management'
             }
         }
     }
