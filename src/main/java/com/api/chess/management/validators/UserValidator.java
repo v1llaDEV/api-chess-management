@@ -40,7 +40,7 @@ public class UserValidator {
 	}
 
 	public static void validateUsernameParameter(User user, UserRepository userRepository) {
-		if (user.getUsername() == null || user.getUsername().isBlank()) {
+		if (user.getUsername() == null || user.getUsername().isEmpty()) {
 			log.info("User {} failed at UserValidator.validateUsernameParameter because username is null ",
 					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new ResourceAlreadyExistsException("Username must be defined");

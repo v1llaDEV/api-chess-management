@@ -35,7 +35,7 @@ public class CountryValidator {
 	}
 
 	public static void validateNameParameter(Country country, CountryRepository countryRepository) {
-		if (country.getName() == null || country.getName().isBlank()) {
+		if (country.getName() == null || country.getName().isEmpty()) {
 			log.info("User {} failed at CountryValidator.validateNameParameter because name is null or empty",
 					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new ResourceAlreadyExistsException("Country name must be defined");
