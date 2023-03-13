@@ -11,5 +11,5 @@ There are 3 roles in the application.
 * ADMIN: You can do everything, including user and roles management.
 
 ``` ruby
-This proyect is created for practising Spring concepts, CD/CI with jenkins and Docker.
+This proyect is created for practising the api rest design with Spring, CD/CI with jenkins and Docker.
 ```
