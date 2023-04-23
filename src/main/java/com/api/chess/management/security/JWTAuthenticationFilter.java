@@ -69,8 +69,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.claim(SecurityConstants.AUTHORITIES_KEY, auth.getAuthorities())
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME).compact();
-		response.addHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY,
-				SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
+		response.getWriter().write(SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
 
 	    addingUserToSecurityContext(request, auth);
 		
