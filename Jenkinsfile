@@ -17,18 +17,18 @@ pipeline {
         stage('DOCKERIZE'){
             steps{
                 echo 'clean old containers'
-                sh 'docker rm api-chess-management --force'
+                sh 'sudo docker rm api-chess-management --force'
                 echo 'clean old images'
-                sh 'docker rmi api-chess-management --force'
+                sh 'sudo docker rmi api-chess-management --force'
                 echo 'Build image'
-                sh 'docker build . -t api-chess-management'
+                sh 'sudo docker build . -t api-chess-management'
             }
         }
 
         stage('DEPLOY'){
             steps{
                  echo 'Deploying'
-                  sh 'docker run -p 8080:8080 -d --name api-chess-management --network tomcat-mysql-network api-chess-management'
+                  sh 'sudo docker run -p 8080:8080 -d --name api-chess-management --network tomcat-mysql-network api-chess-management'
             }
         }
     }
