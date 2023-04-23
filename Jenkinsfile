@@ -28,7 +28,7 @@ pipeline {
         stage('DEPLOY'){
             steps{
                  echo 'Deploying'
-                  sh 'docker run -p 8080:8080 -d --name api-chess-management --network tomcat-mysql-network api-chess-management'
+                  sh 'docker run -p 8081:8080 -d --name api-chess-management --network tomcat-mysql-network api-chess-management'
             }
         }
     }
