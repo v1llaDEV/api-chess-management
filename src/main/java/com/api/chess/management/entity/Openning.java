@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "apertura")
+@Table(name = "apertura", schema = "public")
 public class Openning implements Serializable {
 
 	/**

@@ -16,7 +16,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "partida")
+@Table(name = "partida", schema = "public")
 public class Game implements Serializable {
 
 	/**

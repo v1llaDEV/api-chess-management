@@ -23,7 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "public")
 public class Users implements Serializable {
 
 	/**

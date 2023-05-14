@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "jugador")
+@Table(name = "jugador", schema = "public")
 public class Player implements Serializable {
 
 	/**

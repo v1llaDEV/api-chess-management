@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pais")
+@Table(name = "pais", schema = "public")
 public class Country implements Serializable {
 
 	/**
