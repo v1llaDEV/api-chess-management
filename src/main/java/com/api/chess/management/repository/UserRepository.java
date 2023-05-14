@@ -9,6 +9,6 @@ import com.api.chess.management.entity.Users;
 
 public interface UserRepository extends JpaRepository<Users, Long>{
 
-	@Query("Select u from users u where u.username = ?1")
+	@Query("Select u from Users u where u.username = ?1")
 	public Optional<Users> findByUsername(String username);
 }
