@@ -58,7 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			//ALL PERMISSIONS
 			.antMatchers(AUTH_WHITELIST).permitAll()
+			.antMatchers(LIST_URLS).permitAll();
 			
+		/*
 			//USERS ROUTES
 			.antMatchers(ConfigurationConstants.USER_API_URL + ALL_RESOURCES_MATCHER).hasAnyAuthority(SecurityConstants.ROL_ADMIN)
 			
@@ -68,11 +70,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.DELETE, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
 			.antMatchers(HttpMethod.GET, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE, SecurityConstants.ROL_READ)
 
-			.and()
-			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-			.addFilter(new JWTAuthorizationFilter(authenticationManager()))
+//			.and()
+//			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+//			.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 			;
-		
+		*/
 
 	}
 
