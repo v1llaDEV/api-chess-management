@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.api.chess.management.entity.Rol;
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 import com.api.chess.management.repository.UserRepository;
 
 @Service
@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		User user = userRepository.findByUsername(username).orElse(null);
+		Users user = userRepository.findByUsername(username).orElse(null);
 		if (user == null) {
 			throw new RuntimeException("No se ha encontrado el usuario con username: " + username);
 		}

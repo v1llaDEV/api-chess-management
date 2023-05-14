@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.chess.management.constants.ConfigurationConstants;
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 import com.api.chess.management.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -37,20 +37,20 @@ public class UserController {
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-	@ApiOperation(value = "Get all users", response = User[].class)
+	@ApiOperation(value = "Get all users", response = Users[].class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public List<User> getAllUsers() {
+	public List<Users> getAllUsers() {
 		log.info("User {} calling getAllUsers service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return userService.getAllUsers();
 	}
 
-	@ApiOperation(value = "Get user by id", response = User.class)
+	@ApiOperation(value = "Get user by id", response = Users.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
@@ -59,13 +59,13 @@ public class UserController {
 			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public User getUserBydId(@PathVariable String id) {
+	public Users getUserBydId(@PathVariable String id) {
 		log.info("User {} calling getUserBydId service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return userService.getUserBydId(id);
 	}
 
-	@ApiOperation(value = "Update user", response = User.class)
+	@ApiOperation(value = "Update user", response = Users.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
@@ -74,14 +74,14 @@ public class UserController {
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public User updateUser(@RequestBody User user, @PathVariable String id) {
+	public Users updateUser(@RequestBody Users user, @PathVariable String id) {
 		log.info("User {} calling updateUser service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return userService.updateUser(user, id);
 
 	}
 
-	@ApiOperation(value = "Create user", response = User.class)
+	@ApiOperation(value = "Create user", response = Users.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
@@ -90,7 +90,7 @@ public class UserController {
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public User createUser(@RequestBody User user) {
+	public Users createUser(@RequestBody Users user) {
 		log.info("User {} calling createUser service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return userService.createUser(user);

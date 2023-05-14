@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.api.chess.management.entity.Rol;
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 import com.api.chess.management.repository.RolRepository;
 import com.api.chess.management.repository.UserRepository;
 import com.api.chess.management.service.UserService;
@@ -27,18 +27,18 @@ public class UserServiceImpl implements UserService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public List<User> getAllUsers() {
+	public List<Users> getAllUsers() {
 		return userRepository.findAll();
 	}
 
 	@Override
-	public User getUserBydId(String id) {
-		User userFound = UserValidator.validateIdParameter(id, userRepository);
+	public Users getUserBydId(String id) {
+		Users userFound = UserValidator.validateIdParameter(id, userRepository);
 		return userFound;
 	}
 
 	@Override
-	public User updateUser(User user, String id) {
+	public Users updateUser(Users user, String id) {
 		UserValidator.validateIdParameter(id, userRepository);
 		UserValidator.validateUsernameParameter(user, userRepository);
 		List<Rol> rolList = UserValidator.validateRolParameter(user, rolRepository);
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User createUser(User user) {
+	public Users createUser(Users user) {
 		List<Rol> rolList = UserValidator.validateRolParameter(user, rolRepository);
 		UserValidator.validateUsernameParameter(user, userRepository);
 

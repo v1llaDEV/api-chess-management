@@ -5,17 +5,17 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 
 public interface UserService {
 
-	public List<User> getAllUsers();
+	public List<Users> getAllUsers();
 
-	public User getUserBydId(@PathVariable String id);
+	public Users getUserBydId(@PathVariable String id);
 
-	public User updateUser(@RequestBody User user, @PathVariable String id);
+	public Users updateUser(@RequestBody Users user, @PathVariable String id);
 
-	public User createUser(@RequestBody User user);
+	public Users createUser(@RequestBody Users user);
 
 	public void deleteUser(@PathVariable String id);
 }

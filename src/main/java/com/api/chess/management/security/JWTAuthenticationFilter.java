@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.api.chess.management.constants.ConfigurationConstants;
 import com.api.chess.management.constants.SecurityConstants;
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
@@ -44,10 +44,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 
-		User user = null;
+		Users user = null;
 
 		try {
-			user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+			user = new ObjectMapper().readValue(request.getInputStream(), Users.class);
 
 //			userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 		} catch (UsernameNotFoundException | IOException e) {

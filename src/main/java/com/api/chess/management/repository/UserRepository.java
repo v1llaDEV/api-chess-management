@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<Users, Long>{
 
 	@Query("Select u from users u where u.username = ?1")
-	public Optional<User> findByUsername(String username);
+	public Optional<Users> findByUsername(String username);
 }

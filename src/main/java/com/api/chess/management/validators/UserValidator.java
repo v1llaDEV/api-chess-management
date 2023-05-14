@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.api.chess.management.entity.Rol;
-import com.api.chess.management.entity.User;
+import com.api.chess.management.entity.Users;
 import com.api.chess.management.exception.GeneralException;
 import com.api.chess.management.exception.ResourceAlreadyExistsException;
 import com.api.chess.management.exception.ResourceNotFoundException;
@@ -19,7 +19,7 @@ public class UserValidator {
 
 	private static final Logger log = LoggerFactory.getLogger(CountryValidator.class);
 
-	public static User validateIdParameter(String id, UserRepository userRepository) {
+	public static Users validateIdParameter(String id, UserRepository userRepository) {
 		if (id == null) {
 			log.info("User {} failed at UserValidator.validateIdParameter because id parameter is null ",
 					SecurityContextHolder.getContext().getAuthentication().getName());
@@ -32,27 +32,27 @@ public class UserValidator {
 			throw new GeneralException("id parameter is not a number.");
 		}
 
-		User user = userRepository.findById(Long.valueOf(id))
+		Users user = userRepository.findById(Long.valueOf(id))
 				.orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " doesnt exist"));
 
 		return user;
 
 	}
 
-	public static void validateUsernameParameter(User user, UserRepository userRepository) {
+	public static void validateUsernameParameter(Users user, UserRepository userRepository) {
 		if (user.getUsername() == null || user.getUsername().isEmpty()) {
 			log.info("User {} failed at UserValidator.validateUsernameParameter because username is null ",
 					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new ResourceAlreadyExistsException("Username must be defined");
 		}
 
-		User usernameFound = userRepository.findByUsername(user.getUsername()).orElse(null);
+		Users usernameFound = userRepository.findByUsername(user.getUsername()).orElse(null);
 		if (usernameFound != null) {
 			throw new ResourceAlreadyExistsException("User with username: " + user.getUsername() + " already exists");
 		}
 	}
 
-	public static List<Rol> validateRolParameter(User user, RolRepository rolRepository) {
+	public static List<Rol> validateRolParameter(Users user, RolRepository rolRepository) {
 		// Comprobando que se le indica al menos 1 rol
 		if (user.getRoles() == null || user.getRoles().isEmpty()) {
 			log.info("User {} failed at UserValidator.validateRolParameter because rol list is null ",
