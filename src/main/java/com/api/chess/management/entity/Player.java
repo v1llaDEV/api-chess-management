@@ -22,17 +22,17 @@ public class Player implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id")
+	@Column(name = "id")
 	private Long id;
 
 	@Column(name = "nombre")
 	private String name;
 
-	@Column(name = "Fecha_Nacimiento")
+	@Column(name = "fecha_nacimiento")
 	private String dateBirthday;
 	
 	@ManyToOne
-	@JoinColumn(name = "Id_pais")
+	@JoinColumn(name = "id_pais")
 	private Country country;
 
 	public Long getId() {

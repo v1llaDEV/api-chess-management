@@ -20,7 +20,7 @@ public class Result implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="Id")
+	@Column(name="id")
 	private String id;
 
 	@Column(name = "nombre")

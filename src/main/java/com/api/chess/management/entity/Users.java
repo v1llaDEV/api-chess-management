@@ -34,20 +34,20 @@ public class Users implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
-	@Column(name = "Id")
+	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "Username")
+	@Column(name = "username")
 	private String username;
 
-	@Column(name = "Password")
+	@Column(name = "password")
 	private String password;
 
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_rol", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
 	private List<Rol> roles;
 
-	@Column(name = "Created")
+	@Column(name = "created")
 	@JsonIgnore
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

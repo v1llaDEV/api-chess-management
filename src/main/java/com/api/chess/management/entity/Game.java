@@ -26,29 +26,29 @@ public class Game implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id")
+	@Column(name = "id")
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "Id_Jugador_Blancas")
+	@JoinColumn(name = "id_jugador_Blancas")
 	private Player whitePlayer;
 
 	@ManyToOne
-	@JoinColumn(name = "Id_Jugador_Negras")
+	@JoinColumn(name = "id_jugador_Negras")
 	private Player blackPlayer;
 
 	@ManyToOne
-	@JoinColumn(name = "Id_Resultado")
+	@JoinColumn(name = "id_resultado")
 	private Result result;
 
-	@Column(name = "Movimientos")
+	@Column(name = "movimientos")
 	private Integer movementsCounter;
 
-	@Column(name = "Ano")
+	@Column(name = "ano")
 	private Integer year;
 
 	@ManyToOne
-	@JoinColumn(name = "Id_Apertura")
+	@JoinColumn(name = "id_apertura")
 	private Openning opening;
 
 	public Long getId() {

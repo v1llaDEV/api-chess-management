@@ -25,10 +25,10 @@ public class Rol implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
-	@Column(name = "Id")
+	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "Nombre")
+	@Column(name = "nombre")
 	private String name;
 
 	public Long getId() {
