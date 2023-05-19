@@ -43,11 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    };
 		 
 		 final String[] LIST_URLS = {
-				 ConfigurationConstants.COUNTRY_API_URL + ALL_RESOURCES_MATCHER,
-				 ConfigurationConstants.GAME_API_URL + ALL_RESOURCES_MATCHER,
-				 ConfigurationConstants.OPENNING_API_URL + ALL_RESOURCES_MATCHER,
-				 ConfigurationConstants.PLAYER_API_URL + ALL_RESOURCES_MATCHER,
-				 ConfigurationConstants.RESULT_API_URL + ALL_RESOURCES_MATCHER
+				 ALL_RESOURCES_MATCHER + ConfigurationConstants.COUNTRY_API_URL + ALL_RESOURCES_MATCHER,
+				 ALL_RESOURCES_MATCHER + ConfigurationConstants.GAME_API_URL + ALL_RESOURCES_MATCHER,
+				 ALL_RESOURCES_MATCHER + ConfigurationConstants.OPENNING_API_URL + ALL_RESOURCES_MATCHER,
+				 ALL_RESOURCES_MATCHER + ConfigurationConstants.PLAYER_API_URL + ALL_RESOURCES_MATCHER,
+				 ALL_RESOURCES_MATCHER + ConfigurationConstants.RESULT_API_URL + ALL_RESOURCES_MATCHER
 		 };
 		
 		httpSecurity
