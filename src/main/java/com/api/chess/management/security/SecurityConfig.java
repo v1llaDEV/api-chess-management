@@ -12,9 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.api.chess.management.constants.ConfigurationConstants;
 import com.api.chess.management.constants.SecurityConstants;
@@ -52,8 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		httpSecurity
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and().cors().disable()
-			.csrf().disable()
+			.and().cors()
+			.and().csrf().disable()
 			.authorizeRequests()
 			
 			//ALL PERMISSIONS
@@ -89,11 +88,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-		return source;
-	}
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("*")
+                        .exposedHeaders("content-disposition");
+            }
+        };
+    }
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
