@@ -65,10 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(ConfigurationConstants.USER_API_URL + ALL_RESOURCES_MATCHER).hasAnyAuthority(SecurityConstants.ROL_ADMIN)
 			
 			//COUNTRIES, GAMES, OPENNINGS, PLAYERS, RESULTS ROUTES
-			.antMatchers(HttpMethod.POST, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
-			.antMatchers(HttpMethod.PUT, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
-			.antMatchers(HttpMethod.DELETE, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
-			.antMatchers(HttpMethod.GET, LIST_URLS).hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE, SecurityConstants.ROL_READ)
+			.antMatchers(HttpMethod.POST, LIST_URLS).permitAll()//.hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
+			.antMatchers(HttpMethod.PUT, LIST_URLS).permitAll()//.hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
+			.antMatchers(HttpMethod.DELETE, LIST_URLS).permitAll()// .hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE)
+			.antMatchers(HttpMethod.GET, LIST_URLS).permitAll()//.hasAnyAuthority(SecurityConstants.ROL_ADMIN, SecurityConstants.ROL_READ_WRITE, SecurityConstants.ROL_READ)
 
 			.and()
 			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
