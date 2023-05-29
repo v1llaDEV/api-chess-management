@@ -3,8 +3,6 @@ package com.api.chess.management.validators;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.api.chess.management.entity.Rol;
@@ -15,14 +13,14 @@ import com.api.chess.management.exception.ResourceNotFoundException;
 import com.api.chess.management.repository.RolRepository;
 import com.api.chess.management.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class UserValidator.
  */
+@Slf4j
 public class UserValidator {
-
-	/** The Constant log. */
-	private static final Logger log = LoggerFactory.getLogger(CountryValidator.class);
 
 	/**
 	 * Validate id parameter.

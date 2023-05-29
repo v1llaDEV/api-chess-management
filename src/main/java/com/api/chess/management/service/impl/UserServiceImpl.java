@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
+import com.api.chess.management.dto.responses.UserResponse;
 import com.api.chess.management.entity.Rol;
 import com.api.chess.management.entity.User;
 import com.api.chess.management.repository.RolRepository;
@@ -45,14 +50,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	/**
 	 * Gets the all users.
 	 *
 	 * @return the all users
 	 */
 	@Override
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
+	public List<UserResponse> getAllUsers() {
+
+		List<UserResponse> userDtoList = new ArrayList<>();
+
+		List<User> resultUserList = userRepository.findAll();
+		userDtoList = resultUserList.stream().map(user -> modelMapper.map(user, UserResponse.class))
+				.collect(Collectors.toList());
+
+		return userDtoList;
 	}
 
 	/**
@@ -62,11 +77,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user byd id
 	 */
 	@Override
-	public User getUserBydId(String id) {
+	public UserResponse getUserBydId(String id) {
 		User userFound = UserValidator.validateIdParameter(id, userRepository);
-		return userFound;
+
+		UserResponse userDto = modelMapper.map(userFound, UserResponse.class);
+
+		return userDto;
 	}
-	
+
 	/**
 	 * Gets the user by username.
 	 *
@@ -74,19 +92,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user by username
 	 */
 	@Override
-	public User getUserByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public UserResponse getUserByUsername(String username) {
+		User userFound = userRepository.findByUsername(username);
+		UserResponse userDto = modelMapper.map(userFound, UserResponse.class);
+		return userDto;
 	}
 
 	/**
 	 * Update user.
 	 *
 	 * @param user the user
-	 * @param id the id
+	 * @param id   the id
 	 * @return the user
 	 */
 	@Override
-	public User updateUser(User user, String id) {
+	public UserResponse updateUser(User user, String id) {
 		UserValidator.validateIdParameter(id, userRepository);
 		UserValidator.validateUsernameParameter(user, userRepository);
 		List<Rol> rolList = UserValidator.validateRolParameter(user, rolRepository);
@@ -94,8 +114,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setId(Long.valueOf(id));
 		user.setRoles(rolList);
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		userRepository.save(user);
-		return user;
+		User userSaved = userRepository.save(user);
+		
+		UserResponse userDto = modelMapper.map(userSaved, UserResponse.class);
+		return userDto;
 	}
 
 	/**
@@ -105,7 +127,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user
 	 */
 	@Override
-	public User createUser(User user) {
+	public UserResponse createUser(User user) {
 		List<Rol> rolList = UserValidator.validateRolParameter(user, rolRepository);
 		UserValidator.validateUsernameParameter(user, userRepository);
 
@@ -113,8 +135,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setRoles(rolList);
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setCreated(new Date());
-		userRepository.save(user);
-		return user;
+		User createdUser = userRepository.save(user);
+		
+		UserResponse userDto = modelMapper.map(createdUser, UserResponse.class);
+		
+		return userDto;
 	}
 
 	/**
@@ -127,7 +152,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		UserValidator.validateIdParameter(id, userRepository);
 		userRepository.deleteById(Long.valueOf(id));
 	}
-	
+
 	/**
 	 * Load user by username.
 	 *
@@ -135,20 +160,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user details
 	 */
 	@Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            log.error("Usuario no encontrado en la base de datos: {}", username);
-            throw new UsernameNotFoundException("El usuario " + username + " no existe");
-        } else {
-            log.info("Usuario encontrado en la base de datos: {}", username);
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
-    }
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			log.error("Usuario no encontrado en la base de datos: {}", username);
+			throw new UsernameNotFoundException("El usuario " + username + " no existe");
+		} else {
+			log.info("Usuario encontrado en la base de datos: {}", username);
+		}
+		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		user.getRoles().forEach(role -> {
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		});
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+				authorities);
+	}
 
 }

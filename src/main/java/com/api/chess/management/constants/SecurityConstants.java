@@ -1,5 +1,8 @@
 package com.api.chess.management.constants;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Value;
 
 // TODO: Auto-generated Javadoc
@@ -15,7 +18,7 @@ public class SecurityConstants {
 	public static final String TOKEN_BEARER_PREFIX = "Bearer ";
 	
 	/** The Constant TOKEN_EXPIRATION_TIME. */
-	public static final long TOKEN_EXPIRATION_TIME = 86400000; // 1 day
+	public static final Date TOKEN_EXPIRATION_TIME = new Date();// 1 day
 	
 	/** The Constant AUTHORITIES_KEY. */
 	public static final String AUTHORITIES_KEY = "roles";

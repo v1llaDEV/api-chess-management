@@ -21,10 +21,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.api.chess.management.constants.SecurityConstants;
 import com.api.chess.management.dto.UserLogin;
 import com.api.chess.management.dto.responses.AuthenticationResponse;
+import com.api.chess.management.dto.responses.UserResponse;
 import com.api.chess.management.entity.Rol;
-import com.api.chess.management.entity.User;
 import com.api.chess.management.security.SecurityToken;
 import com.api.chess.management.service.AuthenticationService;
 import com.api.chess.management.service.UserService;
@@ -66,13 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     private final AuthenticationManager authenticationManager;
 
     /** securityToken. */
-    private final SecurityToken securityToken;
-    
-    /**
-     * The Refresh token expire time.
-     */
-    private Date refreshToken_expire_time;
-    
+    private final SecurityToken securityToken;   
     
 
     /**
@@ -95,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
-                User userInfo = userService.getUserByUsername(username);
+                UserResponse userInfo = userService.getUserByUsername(username);
 
                 String access_token = JWT.create()
                         .withSubject(userInfo.getUsername())
@@ -148,7 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .sign(algorithm);
         String refresh_token = JWT.create()
                 .withSubject(userDetails.getUsername())
-                .withExpiresAt(refreshToken_expire_time)
+                .withExpiresAt(SecurityConstants.TOKEN_EXPIRATION_TIME)
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         return new AuthenticationResponse(access_token, refresh_token);

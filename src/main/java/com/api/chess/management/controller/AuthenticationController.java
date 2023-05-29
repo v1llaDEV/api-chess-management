@@ -17,10 +17,12 @@ import com.api.chess.management.service.AuthenticationService;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Api(value = "Authentication", tags = "Authentication")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
 
    private final AuthenticationService authenticationService;

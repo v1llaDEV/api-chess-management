@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.api.chess.management.dto.responses.UserResponse;
 import com.api.chess.management.entity.User;
 
 // TODO: Auto-generated Javadoc
@@ -18,7 +19,7 @@ public interface UserService {
 	 *
 	 * @return the all users
 	 */
-	public List<User> getAllUsers();
+	public List<UserResponse> getAllUsers();
 
 	/**
 	 * Gets the user byd id.
@@ -26,7 +27,7 @@ public interface UserService {
 	 * @param id the id
 	 * @return the user byd id
 	 */
-	public User getUserBydId(@PathVariable String id);
+	public UserResponse getUserBydId(@PathVariable String id);
 
 	/**
 	 * Update user.
@@ -35,7 +36,7 @@ public interface UserService {
 	 * @param id the id
 	 * @return the user
 	 */
-	public User updateUser(@RequestBody User user, @PathVariable String id);
+	public UserResponse updateUser(@RequestBody User user, @PathVariable String id);
 
 	/**
 	 * Creates the user.
@@ -43,7 +44,7 @@ public interface UserService {
 	 * @param user the user
 	 * @return the user
 	 */
-	public User createUser(@RequestBody User user);
+	public UserResponse createUser(@RequestBody User user);
 
 	/**
 	 * Delete user.
@@ -58,5 +59,5 @@ public interface UserService {
 	 * @param username the username
 	 * @return the user by username
 	 */
-	public User getUserByUsername(String username);
+	public UserResponse getUserByUsername(String username);
 }

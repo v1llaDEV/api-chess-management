@@ -2,8 +2,6 @@ package com.api.chess.management.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -28,15 +27,13 @@ import io.swagger.annotations.ApiResponses;
  */
 @RestController
 @RequestMapping(ConfigurationConstants.OPENNING_API_URL)
+@Slf4j
 @Api(value = "Opening", tags = "Opening")
 public class OpenningController {
 
 	/** The openning service. */
 	@Autowired
 	private OpenningService openningService;
-	
-	/** The Constant log. */
-	private static final Logger log = LoggerFactory.getLogger(OpenningController.class);
 
 	/**
 	 * Gets the all opennings.
@@ -48,7 +45,7 @@ public class OpenningController {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
-	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Openning> getAllOpennings() {
 		log.info("User {} calling getAllOpennings service",

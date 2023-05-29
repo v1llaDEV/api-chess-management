@@ -29,6 +29,10 @@ public class Result implements Serializable {
 	/** The name. */
 	@Column(name = "nombre")
 	private String name;
+	
+	/** The small name. */
+	@Column(name="small_name")
+	private String smallName;
 
 	/**
 	 * Gets the id.
@@ -65,5 +69,25 @@ public class Result implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/**
+	 * Gets the small name.
+	 *
+	 * @return the small name
+	 */
+	public String getSmallName() {
+		return smallName;
+	}
+
+	/**
+	 * Sets the small name.
+	 *
+	 * @param smallName the new small name
+	 */
+	public void setSmallName(String smallName) {
+		this.smallName = smallName;
+	}
+	
+	
 
 }

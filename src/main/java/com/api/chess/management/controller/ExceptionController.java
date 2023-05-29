@@ -14,11 +14,14 @@ import com.api.chess.management.exception.GeneralException;
 import com.api.chess.management.exception.ResourceAlreadyExistsException;
 import com.api.chess.management.exception.ResourceNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class ExceptionController.
  */
 @ControllerAdvice
+@Slf4j
 public class ExceptionController{
 
   /**

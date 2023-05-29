@@ -36,7 +36,6 @@ public class User implements Serializable {
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonIgnore
 	@Column(name = "id")
 	private Long id;
 

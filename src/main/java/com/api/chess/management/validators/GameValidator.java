@@ -1,7 +1,5 @@
 package com.api.chess.management.validators;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.api.chess.management.entity.Game;
@@ -12,14 +10,14 @@ import com.api.chess.management.repository.GameRepository;
 import com.api.chess.management.repository.PlayerRepository;
 import com.api.chess.management.repository.ResultRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class GameValidator.
  */
+@Slf4j
 public class GameValidator {
-	
-	/** The Constant log. */
-	private static final Logger log = LoggerFactory.getLogger(CountryValidator.class);
 	
 	/**
 	 * Validate id parameter.
