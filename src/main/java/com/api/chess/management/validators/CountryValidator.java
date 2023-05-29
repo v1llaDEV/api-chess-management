@@ -10,10 +10,22 @@ import com.api.chess.management.exception.ResourceAlreadyExistsException;
 import com.api.chess.management.exception.ResourceNotFoundException;
 import com.api.chess.management.repository.CountryRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CountryValidator.
+ */
 public class CountryValidator {
 	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(CountryValidator.class);
 	
+	/**
+	 * Validate id parameter.
+	 *
+	 * @param id the id
+	 * @param countryRepository the country repository
+	 * @return the country
+	 */
 	public static Country validateIdParameter(String id, CountryRepository countryRepository) {
 		if (id == null) {
 			log.info("User {} failed at CountryValidator.validateIdParameter because id parameter is null ",
@@ -34,6 +46,12 @@ public class CountryValidator {
 
 	}
 
+	/**
+	 * Validate name parameter.
+	 *
+	 * @param country the country
+	 * @param countryRepository the country repository
+	 */
 	public static void validateNameParameter(Country country, CountryRepository countryRepository) {
 		if (country.getName() == null || country.getName().isEmpty()) {
 			log.info("User {} failed at CountryValidator.validateNameParameter because name is null or empty",

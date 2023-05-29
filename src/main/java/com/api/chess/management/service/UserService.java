@@ -5,17 +5,58 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.api.chess.management.entity.Users;
+import com.api.chess.management.entity.User;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface UserService.
+ */
 public interface UserService {
 
-	public List<Users> getAllUsers();
+	/**
+	 * Gets the all users.
+	 *
+	 * @return the all users
+	 */
+	public List<User> getAllUsers();
 
-	public Users getUserBydId(@PathVariable String id);
+	/**
+	 * Gets the user byd id.
+	 *
+	 * @param id the id
+	 * @return the user byd id
+	 */
+	public User getUserBydId(@PathVariable String id);
 
-	public Users updateUser(@RequestBody Users user, @PathVariable String id);
+	/**
+	 * Update user.
+	 *
+	 * @param user the user
+	 * @param id the id
+	 * @return the user
+	 */
+	public User updateUser(@RequestBody User user, @PathVariable String id);
 
-	public Users createUser(@RequestBody Users user);
+	/**
+	 * Creates the user.
+	 *
+	 * @param user the user
+	 * @return the user
+	 */
+	public User createUser(@RequestBody User user);
 
+	/**
+	 * Delete user.
+	 *
+	 * @param id the id
+	 */
 	public void deleteUser(@PathVariable String id);
+	
+	/**
+	 * Gets the user by username.
+	 *
+	 * @param username the username
+	 * @return the user by username
+	 */
+	public User getUserByUsername(String username);
 }

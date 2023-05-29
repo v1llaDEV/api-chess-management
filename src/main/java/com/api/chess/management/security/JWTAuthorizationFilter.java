@@ -1,67 +1,85 @@
 package com.api.chess.management.security;
 
+import static java.util.Arrays.stream;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.api.chess.management.constants.SecurityConstants;
+import com.api.chess.management.dto.responses.ErrorResponse;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+@Component
+@Slf4j
+public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager) {
-		super(authManager);
-	}
+	 /**
+     * The Jwt config.
+     */
+    private final SecurityToken securityToken;
 
+    /**
+     * Instantiates a new Custom authotization filter.
+     *
+     * @param jwtConfig the jwt config
+     */
+    public JWTAuthorizationFilter(SecurityToken securityToken) {
+        this.securityToken = securityToken;
+    }
+	
 	@Override
-	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
-		String header = req.getHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY);
-		if (header == null || !header.startsWith(SecurityConstants.TOKEN_BEARER_PREFIX)) {
-			chain.doFilter(req, res);
-			return;
-		}
-		UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		chain.doFilter(req, res);
-	}
+		if (request.getServletPath().equals("/authentication") || request.getServletPath().equals("/refresh-token")) {
+            filterChain.doFilter(request, response);
+        } else {
+            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
-	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY);
-		if (token != null) {
-			// Se procesa el token y se recupera el usuario.
-			String user = Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME)
-					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, "")).getBody().getSubject();
+                try {
+                    String token = authorizationHeader.substring("Bearer ".length());
+                    Algorithm algorithm = Algorithm.HMAC256(securityToken.getKey());
+                    JWTVerifier verifier = JWT.require(algorithm).build();
+                    DecodedJWT decodedJWT = verifier.verify(token);
+                    String username = decodedJWT.getSubject();
+                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    stream(roles).forEach(role -> {
+                        authorities.add(new SimpleGrantedAuthority(role));
+                    });
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    filterChain.doFilter(request, response);
+                } catch (Exception exception) {
 
-			ArrayList<HashMap<String, String>> roles = (ArrayList<HashMap<String, String>>) Jwts.parser()
-					.setSigningKey(SecurityConstants.JWT_SECRET_KEY_PROPERTY_NAME)
-					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, "")).getBody().get("roles");
+                    log.error("Authorization error: {}", exception.getMessage());
+                    ErrorResponse errorResponse = new ErrorResponse(UNAUTHORIZED.value(), new Date(), exception.getMessage(), request.getPathTranslated());
+                    new ObjectMapper().writeValue(response.getOutputStream(), errorResponse);
+                }
 
-			List<GrantedAuthority> rolList = new ArrayList<GrantedAuthority>();
-
-			for (HashMap<String, String> rol : roles) {
-				rolList.add(new SimpleGrantedAuthority((String) rol.get("authority")));
-			}
-
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, rolList);
-			}
-			return null;
-		}
-		return null;
+            } else {
+                filterChain.doFilter(request, response);
+            }
+        }
 	}
 }

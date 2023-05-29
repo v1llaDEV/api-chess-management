@@ -22,16 +22,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResultController.
+ */
 @RestController
 @RequestMapping(ConfigurationConstants.RESULT_API_URL)
 @Api(value = "Result", tags = "Result")
 public class ResultController {
 
+	/** The result service. */
 	@Autowired
 	private ResultService resultService;
 	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(ResultController.class);
 
+	/**
+	 * Gets the all results.
+	 *
+	 * @return the all results
+	 */
 	@ApiOperation(value = "Get all results", response = Result[].class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),

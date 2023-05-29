@@ -27,16 +27,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CountryController.
+ */
 @RestController
 @RequestMapping(ConfigurationConstants.COUNTRY_API_URL)
 @Api(value = "Country", tags = "Country")
 public class CountryController {
 
+	/** The country service. */
 	@Autowired
 	private CountryService countryService;
 
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(CountryController.class);
 
+	/**
+	 * Gets the all countries.
+	 *
+	 * @return the all countries
+	 */
 	@ApiOperation(value = "Get all countries", response = Country[].class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -51,6 +62,12 @@ public class CountryController {
 		return countryService.getAllCountries();
 	}
 
+	/**
+	 * Gets the country by id.
+	 *
+	 * @param id the id
+	 * @return the country by id
+	 */
 	@ApiOperation(value = "Get country by id", response = Country.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -66,6 +83,13 @@ public class CountryController {
 		return countryService.getCountryById(id);
 	}
 
+	/**
+	 * Update country.
+	 *
+	 * @param country the country
+	 * @param id the id
+	 * @return the country
+	 */
 	@ApiOperation(value = "Update country", response = Country.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -82,6 +106,12 @@ public class CountryController {
 
 	}
 
+	/**
+	 * Creates the country.
+	 *
+	 * @param country the country
+	 * @return the country
+	 */
 	@ApiOperation(value = "Create country", response = Country.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -98,6 +128,11 @@ public class CountryController {
 
 	}
 
+	/**
+	 * Delete country.
+	 *
+	 * @param id the id
+	 */
 	@ApiOperation(value = "Delete country", response = Void.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),

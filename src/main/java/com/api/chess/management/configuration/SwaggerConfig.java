@@ -19,10 +19,21 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SwaggerConfig.
+ *
+ * @author v1llaDEV
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
+	/**
+	 * Api docket.
+	 *
+	 * @return the docket
+	 */
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -35,6 +46,12 @@ public class SwaggerConfig {
 				.build();
 	}
 	
+	
+	/**
+	 * Gets the api info.
+	 *
+	 * @return the api info
+	 */
 	private ApiInfo getApiInfo() {
 		return new ApiInfo(
 				"Chess management API",
@@ -48,14 +65,29 @@ public class SwaggerConfig {
 				);
 	}
 	
+	/**
+	 * Api key.
+	 *
+	 * @return the api key
+	 */
 	private ApiKey apiKey() { 
 	    return new ApiKey("JWT", "Authorization", "header"); 
 	}
 	
+	/**
+	 * Security context.
+	 *
+	 * @return the security context
+	 */
 	private SecurityContext securityContext() { 
 	    return SecurityContext.builder().securityReferences(defaultAuth()).build(); 
 	} 
 	
+	/**
+	 * Default auth.
+	 *
+	 * @return the list
+	 */
 	private List<SecurityReference> defaultAuth() { 
 	    AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything"); 
 	    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1]; 

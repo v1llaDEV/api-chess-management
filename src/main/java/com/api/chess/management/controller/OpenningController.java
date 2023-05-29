@@ -22,16 +22,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OpenningController.
+ */
 @RestController
 @RequestMapping(ConfigurationConstants.OPENNING_API_URL)
 @Api(value = "Opening", tags = "Opening")
 public class OpenningController {
 
+	/** The openning service. */
 	@Autowired
 	private OpenningService openningService;
 	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(OpenningController.class);
 
+	/**
+	 * Gets the all opennings.
+	 *
+	 * @return the all opennings
+	 */
 	@ApiOperation(value = "Get all opennings", response = Openning[].class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),

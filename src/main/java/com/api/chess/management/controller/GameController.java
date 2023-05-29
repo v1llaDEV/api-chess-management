@@ -27,16 +27,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GameController.
+ */
 @RestController
 @RequestMapping(ConfigurationConstants.GAME_API_URL)
 @Api(value = "Game", tags = "Game")
 public class GameController {
 	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
+	/** The game service. */
 	@Autowired
 	private GameService gameService;
 
+	/**
+	 * Gets the all games.
+	 *
+	 * @return the all games
+	 */
 	@ApiOperation(value = "Get all games", response = Game[].class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -50,6 +61,12 @@ public class GameController {
 		return gameService.getAllCountries();
 	}
 
+	/**
+	 * Gets the game by id.
+	 *
+	 * @param id the id
+	 * @return the game by id
+	 */
 	@ApiOperation(value = "Get game by id", response = Game.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -65,6 +82,13 @@ public class GameController {
 		return gameService.getGameById(id);
 	}
 
+	/**
+	 * Update game.
+	 *
+	 * @param country the country
+	 * @param id the id
+	 * @return the game
+	 */
 	@ApiOperation(value = "Get game", response = Game.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -81,6 +105,12 @@ public class GameController {
 
 	}
 
+	/**
+	 * Creates the game.
+	 *
+	 * @param country the country
+	 * @return the game
+	 */
 	@ApiOperation(value = "Create game", response = Game.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
@@ -97,6 +127,11 @@ public class GameController {
 
 	}
 
+	/**
+	 * Delete game.
+	 *
+	 * @param id the id
+	 */
 	@ApiOperation(value = "Delete", response = Void.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),

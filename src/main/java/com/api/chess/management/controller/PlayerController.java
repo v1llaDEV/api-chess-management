@@ -27,16 +27,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerController.
+ */
 @RestController
 @RequestMapping(ConfigurationConstants.PLAYER_API_URL)
 @Api(value = "Player", tags = "Player")
 public class PlayerController {
 
+	/** The player service. */
 	@Autowired
 	private PlayerService playerService;
 
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
+	/**
+	 * Gets the all players.
+	 *
+	 * @return the all players
+	 */
 	@ApiOperation(value = "Get all players", response = Player[].class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
@@ -49,6 +60,12 @@ public class PlayerController {
 		return playerService.getAllPlayers();
 	}
 
+	/**
+	 * Gets the player by id.
+	 *
+	 * @param id the id
+	 * @return the player by id
+	 */
 	@ApiOperation(value = "Get player by id", response = Player.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
@@ -62,6 +79,13 @@ public class PlayerController {
 		return playerService.getPlayerById(id);
 	}
 
+	/**
+	 * Update player.
+	 *
+	 * @param player the player
+	 * @param id the id
+	 * @return the player
+	 */
 	@ApiOperation(value = "Update player", response = Player.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
@@ -76,6 +100,12 @@ public class PlayerController {
 
 	}
 
+	/**
+	 * Creates the player.
+	 *
+	 * @param player the player
+	 * @return the player
+	 */
 	@ApiOperation(value = "Create player", response = Player.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
@@ -90,6 +120,11 @@ public class PlayerController {
 
 	}
 
+	/**
+	 * Delete player.
+	 *
+	 * @param id the id
+	 */
 	@ApiOperation(value = "Delete player", response = Void.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
