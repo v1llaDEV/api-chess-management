@@ -11,7 +11,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  */
 @EnableEurekaClient
 @SpringBootApplication
-public class ProyectoGestionAjedrezApplication extends SpringBootServletInitializer {
+public class ProyectoGestionAjedrezApplication{
 
 	/**
 	 * The main method.
