@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.chess.management.entity.Player;
 import com.api.chess.management.repository.CountryRepository;
@@ -32,6 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
 	 * @return the all players
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<Player> getAllPlayers() {
 		return playerRepository.findAll();
 	}
@@ -43,6 +45,7 @@ public class PlayerServiceImpl implements PlayerService {
 	 * @return the player by id
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Player getPlayerById(String id) {
 		Player playerFound = PlayerValidator.validateIdParameter(id, playerRepository);
 		return playerFound;
@@ -56,6 +59,7 @@ public class PlayerServiceImpl implements PlayerService {
 	 * @return the player
 	 */
 	@Override
+	@Transactional
 	public Player updatePlayer(Player player, String id) {
 		PlayerValidator.validateIdParameter(id, playerRepository);
 		PlayerValidator.validateCountryId(player, countryRepository);
@@ -72,6 +76,7 @@ public class PlayerServiceImpl implements PlayerService {
 	 * @return the player
 	 */
 	@Override
+	@Transactional
 	public Player createPlayer(Player player) {
 		PlayerValidator.validateCountryId(player, countryRepository);
 
@@ -86,6 +91,7 @@ public class PlayerServiceImpl implements PlayerService {
 	 * @param id the id
 	 */
 	@Override
+	@Transactional
 	public void deletePlayer(String id) {
 		PlayerValidator.validateIdParameter(id, playerRepository);
 		playerRepository.deleteById(Long.valueOf(id));

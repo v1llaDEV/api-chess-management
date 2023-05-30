@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.chess.management.entity.Country;
 import com.api.chess.management.repository.CountryRepository;
@@ -36,6 +37,7 @@ public class CountryServiceImpl implements CountryService {
 	 *
 	 * @return the all countries
 	 */
+	@Transactional(readOnly = true)
 	@Override
 	public List<Country> getAllCountries() {
 		return countryRepository.findAll();
@@ -47,6 +49,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @param id the id
 	 * @return the country by id
 	 */
+	@Transactional(readOnly = true)
 	@Override
 	public Country getCountryById(String id) {
 		Country countryFound = CountryValidator.validateIdParameter(id, countryRepository);
@@ -60,6 +63,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @param id the id
 	 * @return the country
 	 */
+	@Transactional
 	@Override
 	public Country updateCountry(Country country, String id) {
 		CountryValidator.validateIdParameter(id, countryRepository);
@@ -76,6 +80,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @param country the country
 	 * @return the country
 	 */
+	@Transactional
 	@Override
 	public Country createCountry(Country country) {
 
@@ -91,6 +96,7 @@ public class CountryServiceImpl implements CountryService {
 	 *
 	 * @param id the id
 	 */
+	@Transactional
 	@Override
 	public void deleteCountry(String id) {
 		CountryValidator.validateIdParameter(id, countryRepository);

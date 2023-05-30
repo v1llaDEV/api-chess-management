@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.chess.management.entity.Result;
 import com.api.chess.management.repository.ResultRepository;
@@ -26,6 +27,7 @@ public class ResultServiceImpl implements ResultService {
 	 * @return the all results
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<Result> getAllResults() {
 		return resultRepository.findAll();
 	}

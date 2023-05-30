@@ -6,12 +6,21 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SecurityToken.
+ */
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "jwt")
+
+/**
+ * Instantiates a new security token.
+ */
 @Data
 public class SecurityToken {
 
+    /** The key. */
     private String key;
 
     

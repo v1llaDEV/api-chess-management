@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,8 @@ public class AuthenticationController {
     */
    @GetMapping("/refresh-token")
    private void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	   log.info("User {} calling refreshToken service",
+				SecurityContextHolder.getContext().getAuthentication().getName());
        authenticationService.refreshToken(request, response);
    }
 
@@ -48,7 +51,9 @@ public class AuthenticationController {
     * @return the response entity
     */
    @PostMapping("/authentication")
-   private ResponseEntity<AuthenticationResponse> login(HttpServletRequest request, @RequestBody UserLogin loginRequest) {
+   private ResponseEntity<AuthenticationResponse> authentication(HttpServletRequest request, @RequestBody UserLogin loginRequest) {
+	   log.info("User {} calling authentication service",
+				SecurityContextHolder.getContext().getAuthentication().getName());
 	   AuthenticationResponse loginResponse = authenticationService.login(request, loginRequest);
        return ResponseEntity.ok(loginResponse);
    }

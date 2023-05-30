@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.chess.management.constants.SecurityConstants;
 import com.api.chess.management.dto.UserLogin;
@@ -77,6 +78,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
      * @param response the response
      * @throws IOException the io exception
      */
+    @Transactional(readOnly = true)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         log.info("Actualizando token");
@@ -124,6 +126,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
      * @return the login response
      * @throws BadCredentialsException the bad credentials exception
      */
+    @Transactional(readOnly = true)
     public AuthenticationResponse login(HttpServletRequest request, UserLogin loginRequest) throws BadCredentialsException {
         log.info("El usuario es: {}", loginRequest.getUsername());
         Authentication authentication = null;

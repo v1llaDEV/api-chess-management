@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the all users
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<UserResponse> getAllUsers() {
 
 		List<UserResponse> userDtoList = new ArrayList<>();
@@ -77,6 +78,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user byd id
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public UserResponse getUserBydId(String id) {
 		User userFound = UserValidator.validateIdParameter(id, userRepository);
 
@@ -92,6 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user by username
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public UserResponse getUserByUsername(String username) {
 		User userFound = userRepository.findByUsername(username);
 		UserResponse userDto = modelMapper.map(userFound, UserResponse.class);
@@ -106,6 +109,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user
 	 */
 	@Override
+	@Transactional
 	public UserResponse updateUser(User user, String id) {
 		UserValidator.validateIdParameter(id, userRepository);
 		UserValidator.validateUsernameParameter(user, userRepository);
@@ -127,6 +131,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @return the user
 	 */
 	@Override
+	@Transactional
 	public UserResponse createUser(User user) {
 		List<Rol> rolList = UserValidator.validateRolParameter(user, rolRepository);
 		UserValidator.validateUsernameParameter(user, userRepository);
@@ -148,6 +153,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * @param id the id
 	 */
 	@Override
+	@Transactional
 	public void deleteUser(String id) {
 		UserValidator.validateIdParameter(id, userRepository);
 		userRepository.deleteById(Long.valueOf(id));
