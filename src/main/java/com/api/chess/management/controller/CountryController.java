@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.chess.management.constants.ConfigurationConstants;
+import com.api.chess.management.dto.responses.CountryResponse;
 import com.api.chess.management.entity.Country;
 import com.api.chess.management.service.CountryService;
 
@@ -45,14 +46,14 @@ public class CountryController {
 	 *
 	 * @return the all countries
 	 */
-	@ApiOperation(value = "Get all countries", response = Country[].class)
+	@ApiOperation(value = "Get all countries", response = CountryResponse[].class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 401, message = "Forbidden. Access Denied."),
 			@ApiResponse(code = 403, message = "Forbidden. Access Denied.") })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Country> getAllCountries() {
+	public List<CountryResponse> getAllCountries() {
 
 		log.info("User {} calling getAllCountries service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
@@ -65,7 +66,7 @@ public class CountryController {
 	 * @param id the id
 	 * @return the country by id
 	 */
-	@ApiOperation(value = "Get country by id", response = Country.class)
+	@ApiOperation(value = "Get country by id", response = CountryResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
@@ -74,7 +75,7 @@ public class CountryController {
 			@ApiResponse(code = 404, message = "Not found.")})
 	@GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Country getCountryById(@PathVariable String id) {
+	public CountryResponse getCountryById(@PathVariable String id) {
 		log.info("User {} calling getCountryById service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return countryService.getCountryById(id);
@@ -87,7 +88,7 @@ public class CountryController {
 	 * @param id the id
 	 * @return the country
 	 */
-	@ApiOperation(value = "Update country", response = Country.class)
+	@ApiOperation(value = "Update country", response = CountryResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
@@ -96,7 +97,7 @@ public class CountryController {
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Country updateCountry(@RequestBody Country country, @PathVariable String id) {
+	public CountryResponse updateCountry(@RequestBody Country country, @PathVariable String id) {
 		log.info("User {} calling updateCountry service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return countryService.updateCountry(country, id);
@@ -109,7 +110,7 @@ public class CountryController {
 	 * @param country the country
 	 * @return the country
 	 */
-	@ApiOperation(value = "Create country", response = Country.class)
+	@ApiOperation(value = "Create country", response = CountryResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
@@ -118,7 +119,7 @@ public class CountryController {
 			@ApiResponse(code = 404, message = "Not found.")})
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Country createCountry(@RequestBody Country country) {
+	public CountryResponse createCountry(@RequestBody Country country) {
 		log.info("User {} calling createCountry service",
 				SecurityContextHolder.getContext().getAuthentication().getName());
 		return countryService.createCountry(country);

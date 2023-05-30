@@ -14,17 +14,20 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * The Class CountryValidator.
  */
+
+/** The Constant log. */
+
+/** The Constant log. */
 @Slf4j
 public class CountryValidator {
 	
+
 	/**
 	 * Validate id parameter.
 	 *
 	 * @param id the id
-	 * @param countryRepository the country repository
-	 * @return the country
 	 */
-	public static Country validateIdParameter(String id, CountryRepository countryRepository) {
+	public static void validateIdParameter(String id, CountryRepository countryRepository) {
 		if (id == null) {
 			log.info("User {} failed at CountryValidator.validateIdParameter because id parameter is null ",
 					SecurityContextHolder.getContext().getAuthentication().getName());
@@ -36,11 +39,9 @@ public class CountryValidator {
 					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new GeneralException("id parameter is not a number.");
 		}
-
-		Country country = countryRepository.findById(Long.valueOf(id))
-				.orElseThrow(() -> new ResourceNotFoundException("Country with id: " + id + " doesnt exist"));
-
-		return country;
+		
+		countryRepository.findById(Long.valueOf(id))
+		.orElseThrow(() -> new ResourceNotFoundException("Country with id: " + id + " doesnt exist"));
 
 	}
 
@@ -63,6 +64,10 @@ public class CountryValidator {
 					SecurityContextHolder.getContext().getAuthentication().getName());
 			throw new ResourceAlreadyExistsException("Country with name: " + countryName.getName() + " already exists");
 		}
+	}
+	
+	public static ResourceNotFoundException throwExcepctionForCountryNotFound(String id){
+		return new ResourceNotFoundException("Country with id: " + id + " doesnt exist");
 	}
 
 }

@@ -1,11 +1,15 @@
 package com.api.chess.management.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.api.chess.management.dto.responses.CountryResponse;
 import com.api.chess.management.entity.Country;
 import com.api.chess.management.repository.CountryRepository;
 import com.api.chess.management.repository.GameRepository;
@@ -31,6 +35,9 @@ public class CountryServiceImpl implements CountryService {
 	/** The game repository. */
 	@Autowired
 	GameRepository gameRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	/**
 	 * Gets the all countries.
@@ -39,8 +46,15 @@ public class CountryServiceImpl implements CountryService {
 	 */
 	@Transactional(readOnly = true)
 	@Override
-	public List<Country> getAllCountries() {
-		return countryRepository.findAll();
+	public List<CountryResponse> getAllCountries() {
+		List<CountryResponse> responseCountryList = new ArrayList<CountryResponse>();
+		
+		List<Country> countryList = countryRepository.findAll();
+		responseCountryList = countryList.stream().map(country -> modelMapper.map(country, CountryResponse.class))
+				.collect(Collectors.toList());
+		
+		return responseCountryList;
+		
 	}
 
 	/**
@@ -51,9 +65,16 @@ public class CountryServiceImpl implements CountryService {
 	 */
 	@Transactional(readOnly = true)
 	@Override
-	public Country getCountryById(String id) {
-		Country countryFound = CountryValidator.validateIdParameter(id, countryRepository);
-		return countryFound;
+	public CountryResponse getCountryById(String id) {
+		
+		CountryValidator.validateIdParameter(id, countryRepository);
+		
+		Country country = countryRepository.findById(Long.valueOf(id)).get();
+
+		CountryResponse countryResponse = new CountryResponse();
+		countryResponse = modelMapper.map(country, CountryResponse.class);
+		
+		return countryResponse;
 	}
 
 	/**
@@ -65,13 +86,17 @@ public class CountryServiceImpl implements CountryService {
 	 */
 	@Transactional
 	@Override
-	public Country updateCountry(Country country, String id) {
+	public CountryResponse updateCountry(Country country, String id) {		
 		CountryValidator.validateIdParameter(id, countryRepository);
 		CountryValidator.validateNameParameter(country, countryRepository);
 
 		country.setId(Long.valueOf(id));
-		countryRepository.save(country);
-		return country;
+		Country countrySaved = countryRepository.save(country);
+		
+		CountryResponse countryResponse = new CountryResponse();
+		countryResponse = modelMapper.map(countrySaved, CountryResponse.class);
+		
+		return countryResponse;
 	}
 
 	/**
@@ -82,13 +107,15 @@ public class CountryServiceImpl implements CountryService {
 	 */
 	@Transactional
 	@Override
-	public Country createCountry(Country country) {
-
+	public CountryResponse createCountry(Country country) {		
 		CountryValidator.validateNameParameter(country, countryRepository);
-
 		country.setId(null);
-		countryRepository.save(country);
-		return country;
+		Country countrySaved = countryRepository.save(country);
+		
+		CountryResponse countryResponse = new CountryResponse();
+		countryResponse = modelMapper.map(countrySaved, CountryResponse.class);
+
+		return countryResponse;
 	}
 
 	/**

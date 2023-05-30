@@ -2,6 +2,7 @@ package com.api.chess.management.service;
 
 import java.util.List;
 
+import com.api.chess.management.dto.responses.CountryResponse;
 import com.api.chess.management.entity.Country;
 
 // TODO: Auto-generated Javadoc
@@ -15,7 +16,7 @@ public interface CountryService {
 	 *
 	 * @return the all countries
 	 */
-	public List<Country> getAllCountries();
+	public List<CountryResponse> getAllCountries();
 
 	/**
 	 * Gets the country by id.
@@ -23,7 +24,7 @@ public interface CountryService {
 	 * @param id the id
 	 * @return the country by id
 	 */
-	public Country getCountryById(String id);
+	public CountryResponse getCountryById(String id);
 
 	/**
 	 * Update country.
@@ -32,7 +33,7 @@ public interface CountryService {
 	 * @param id the id
 	 * @return the country
 	 */
-	public Country updateCountry(Country country, String id);
+	public CountryResponse updateCountry(Country country, String id);
 
 	/**
 	 * Creates the country.
@@ -40,7 +41,7 @@ public interface CountryService {
 	 * @param country the country
 	 * @return the country
 	 */
-	public Country createCountry(Country country);
+	public CountryResponse createCountry(Country country);
 
 	/**
 	 * Delete country.
